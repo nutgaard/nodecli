@@ -15,7 +15,7 @@ const logLevels = {
 global.logLevel = logLevels.DEBUG;
 
 function test(level) {
-    return level.level >= global.logLevel;
+    return level.level >= global.logLevel.level;
 }
 
 function log(level, msg, ...extra) {

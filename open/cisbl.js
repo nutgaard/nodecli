@@ -19,11 +19,10 @@ module.exports = function (query) {
         .then((data) => data.suggestions)
         .then((suggestions) => {
             if (suggestions.length === 0) {
-                logging.error('Fant ingen jobber som matched ', query);
+                logging.error('Fant ingen resultater for:', query);
             } else if (suggestions.length === 1) {
                 openJob(suggestions[0].name);
             } else {
-                console.log('suggestions', suggestions, suggestions.map((s) => s.name));
                 inquirer.prompt([{
                     type: 'list',
                     name: 'app',
