@@ -7,7 +7,8 @@
   "license": "MIT",
   "preferGlobal": true,
   "bin": {
-    "vera": "./vera/index.js"
+    "vera": "./vera/index.js",
+    "open": "./open/index.js"
   },
   "dependencies": {
     "chalk": "^1.1.3",

@@ -4,8 +4,10 @@ const argv = require('yargs').argv;
 
 const command = argv._.splice(0, 1);
 const commands = {
-    lift: require('./lift-command'),
-    diff: require('./diff-command'),
+    vera: require('./vera'),
+    stash: require('./stash'),
+    fasit: require('./fasit'),
+    cisbl: require('./cisbl')
 };
 
 if (!commands[command]) {
@@ -14,5 +16,4 @@ if (!commands[command]) {
 }
 
 commands[command](...argv._);
-console.log('');
 console.log('');
