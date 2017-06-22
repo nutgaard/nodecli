@@ -8,11 +8,13 @@
   "preferGlobal": true,
   "bin": {
     "vera": "./vera/index.js",
-    "open": "./open/index.js"
+    "open": "./open/index.js",
+    "commit": "./commitizenish/index.js"
   },
   "dependencies": {
     "chalk": "^1.1.3",
     "cli-table": "^0.3.1",
+    "execa": "^0.7.0",
     "inquirer": "^3.0.6",
     "node-fetch": "^1.6.3",
     "open": "0.0.5",
