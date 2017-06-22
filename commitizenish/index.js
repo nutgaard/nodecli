@@ -1,5 +1,4 @@
 #!node
-const chalk = require('chalk');
 const inquirer = require('inquirer');
 const execa = require('execa');
 const logging = require('./../utils/logging');
