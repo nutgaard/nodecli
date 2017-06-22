@@ -5,7 +5,7 @@ const execa = require('execa');
 
 module.exports = function(query) {
     if (!query || query === '.') {
-        const regex = /(\w+)\/(\w+)\.git/g;
+        const regex = /origin.*?([\w-]+)\/([\w-]+)\.git/g;
         const message = execa.shellSync('git remote -v');
         const match = regex.exec(message.stdout);
         const project = match[1];
