@@ -13,7 +13,11 @@ function openJob(jobDesc) {
     open(`http://cisbl.devillo.no/${jobUrl}`);
 }
 
-module.exports = function (query) {
+module.exports = function (query, suffix) {
+    if (!query || query === '.') {
+        const path = process.cwd().split('\\');
+        query = path[path.length - 1] + '-' + suffix;
+    }
     fetch(`http://cisbl.devillo.no/search/suggest?query=${query}`)
         .then((resp) => resp.json())
         .then((data) => data.suggestions)
