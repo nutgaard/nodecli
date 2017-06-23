@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const chalk = require('chalk');
+const Table = require('cli-table');
 
 global.debug = false;
 
@@ -22,23 +23,50 @@ function notSameVersion([app, environments]) {
     return !environments.every((env) => env.version === baseVersion);
 }
 
-function format(data) {
-    return Object.entries(
-        data.reduce(groupBy('application'), {})
-    )
-        .filter(notSameVersion)
-        .map(([app, environments]) => {
-            return { [app]: environments.reduce(groupBy('environment'), {}) }
-        })
-        .reduce(mergeToObject, {});
+function groupApplication(diffOnly = false) {
+    const diffOnlyFn = diffOnly ? notSameVersion : () => true;
+    return (data) => {
+        return Object.entries(data.reduce(groupBy('application'), {}))
+            .filter(diffOnlyFn)
+            .map(([app, environments]) => {
+                return { [app]: environments.reduce(groupBy('environment'), {}) }
+            })
+            .reduce(mergeToObject, {});
+    }
 }
-function getDiff(query, env1, env2) {
+
+function printApplicationTableFor(envs) {
+    return (data) => {
+        const tableRows = Object.entries(data)
+            .map(([app, environments]) => {
+                return [
+                    app,
+                    ...(envs.map((env) => environments[env][0].version))
+                ];
+            });
+
+        let table = new Table({
+            head: [
+                chalk.white.bold('Application'),
+                ...(envs.map((env) => chalk.white.bold(env)))
+            ]
+        });
+        table.push(...tableRows);
+        console.log(table.toString());
+        console.log('');
+        console.log('');
+
+        return data;
+    };
+}
+
+function getVersions(query, envs, diffOnly = false) {
     return fetch('https://vera.adeo.no/api/v1/deploylog?onlyLatest=true&filterUndeployed=true')
         .then((resp) => resp.json())
         .then((deployments) => deployments
             .filter((deployment) => deployment.application.includes(query))
-            .filter((deployment) => deployment.environment === env1 || deployment.environment === env2)
-        ).then(format)
+            .filter((deployment) => envs.includes(deployment.environment)))
+        .then(groupApplication(diffOnly));
 }
 
 function settled(...promises) {
@@ -77,9 +105,11 @@ function error(msg, ...extra) {
 }
 
 module.exports = {
-    getDiff,
     info,
     error,
     debug,
-    settled
+    settled,
+    getVersions,
+    groupApplication,
+    printApplicationTableFor
 };

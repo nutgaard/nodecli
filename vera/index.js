@@ -6,6 +6,7 @@ const command = argv._.splice(0, 1);
 const commands = {
     lift: require('./lift-command'),
     diff: require('./diff-command'),
+    sjekk: require('./sjekk-command'),
 };
 
 if (!commands[command]) {
