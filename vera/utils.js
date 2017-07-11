@@ -1,8 +1,7 @@
 const fetch = require('node-fetch');
 const chalk = require('chalk');
 const Table = require('cli-table');
-
-global.debug = false;
+const logging = require('./../utils/logging');
 
 function groupBy(key) {
     return (acc, element) => {
@@ -52,9 +51,8 @@ function printApplicationTableFor(envs) {
             ]
         });
         table.push(...tableRows);
-        console.log(table.toString());
-        console.log('');
-        console.log('');
+        logging.pure(table.toString());
+        logging.spacer(2);
 
         return data;
     };
@@ -92,22 +90,7 @@ function settled(...promises) {
     });
 }
 
-function debug(msg, ...extra) {
-    global.debug && console.log(`${chalk.white('[INFO]')} ${msg}`, ...extra)
-}
-
-function info(msg, ...extra) {
-    console.log(`${chalk.white('[INFO]')} ${msg}`, ...extra)
-}
-
-function error(msg, ...extra) {
-    console.log(`${chalk.red('[ERROR]')} ${msg}`, ...extra)
-}
-
 module.exports = {
-    info,
-    error,
-    debug,
     settled,
     getVersions,
     groupApplication,

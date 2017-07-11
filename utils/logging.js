@@ -12,7 +12,7 @@ const logLevels = {
     ERROR
 };
 
-global.logLevel = logLevels.DEBUG;
+global.logLevel = logLevels.INFO;
 
 function test(level) {
     return level.level >= global.logLevel.level;
@@ -41,6 +41,14 @@ function error(msg, ...extra) {
 function fatal(msg, ...extra) {
     log(FATAL, msg, ...extra);
 }
+function pure(...args) {
+    console.log(...args);
+}
+function spacer(nof = 1) {
+    for (let i = 0; i < nof; i++) {
+        console.log('');
+    }
+}
 
 module.exports = {
     logLevels,
@@ -48,5 +56,7 @@ module.exports = {
     info,
     warn,
     error,
-    fatal
+    fatal,
+    pure,
+    spacer
 };

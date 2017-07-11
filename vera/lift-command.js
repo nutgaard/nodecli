@@ -1,4 +1,5 @@
 const Utils = require('./utils');
+const logging = require('./../utils/logging');
 const inquirer = require('inquirer');
 const request = require('request-promise');
 const open = require('open');
@@ -9,7 +10,6 @@ const brukernavn = process.env.domenebrukernavn;
 const passord = process.env.domenepassord;
 
 const jiraUrl = 'https://jira.adeo.no';
-const auth = brukernavn + ':' + passord;
 
 function promptApps(query, env1, env2) {
     return (data) => inquirer.prompt([{
@@ -22,10 +22,10 @@ function promptApps(query, env1, env2) {
 
 function deployApps({ apps, data, query, env1, env2 }) {
     const deploys = apps.map((app) => {
-        Utils.info(`Bestiller til ${app}:${data[app][env1][0].version} til ${env2} (${miljoMapper[env2]})`);
+        logging.info(`Bestiller til ${app}:${data[app][env1][0].version} til ${env2} (${miljoMapper[env2]})`);
         return deploy(app, data[app][env1][0].version, miljoMapper[env2])
             .then((res) => {
-                Utils.info(`Bestilt ${res.key} (${app})`);
+                logging.info(`Bestilt ${res.key} (${app})`);
                 return res;
             });
     });
@@ -35,10 +35,10 @@ function deployApps({ apps, data, query, env1, env2 }) {
         const okDeploys = results.filter((result) => result.ok);
 
         if (feiledDeploys.length !== 0) {
-            Utils.error(`${feiledDeploys.length} deploys feilet...`);
+            logging.error(`${feiledDeploys.length} deploys feilet...`);
         }
         if (okDeploys.length !== 0) {
-            Utils.info(`${okDeploys.length} deploys bestilt ok...`);
+            logging.info(`${okDeploys.length} deploys bestilt ok...`);
             inquirer.prompt([{
                 type: 'confirm',
                 name: 'open',
@@ -75,7 +75,7 @@ function deploy(app, version, miljo) {
 
     return post(`${jiraUrl}/rest/api/2/issue`, brukernavn, passord, json)
         .catch((error) => {
-            Utils.error("Noe gikk feil", error);
+            logging.error("Noe gikk feil", error);
             return {
                 ok: false
             };
@@ -100,15 +100,15 @@ function post(url, username, password, json) {
 
 module.exports = function (query, env1, env2) {
     if (!query || query.length === 0) {
-        Utils.error('Må sende med query...');
+        logging.error('Må sende med query...');
         return;
     }
     if (!env1 || env1.length === 0) {
-        Utils.error('Må sende med env1...');
+        logging.error('Må sende med env1...');
         return;
     }
     if (!env2 || env2.length === 0) {
-        Utils.error('Må sende med env2...');
+        logging.error('Må sende med env2...');
         return;
     }
 

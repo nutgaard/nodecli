@@ -1,5 +1,5 @@
 #!node
-const chalk = require('chalk');
+const logging = require('./../utils/logging');
 const argv = require('yargs').argv;
 
 const command = argv._.splice(0, 1);
@@ -10,10 +10,9 @@ const commands = {
 };
 
 if (!commands[command]) {
-    console.log(`${chalk.red('ERROR')} Unknown command`);
+    logging.error('Unknown command');
     return;
 }
 
 commands[command](...argv._);
-console.log('');
-console.log('');
+logging.spacer(2);
