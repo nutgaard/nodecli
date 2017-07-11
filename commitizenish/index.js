@@ -58,7 +58,7 @@ inquirer.prompt([
     }
 ]).then((resp) => {
     try {
-        execa.shellSync(`git commit -m ${lagCommitMelding(resp)} -e`, { stdio: 'inherit' })
+        execa.shellSync(`git commit -m "${lagCommitMelding(resp)}" -e`, { stdio: 'inherit' })
     } catch (e) {
         logging.error("Could not commit", e);
     }
