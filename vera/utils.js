@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const chalk = require('chalk');
 const Table = require('cli-table');
+const fuzzysearch = require('fuzzysearch');
 const logging = require('./../utils/logging');
 
 function groupBy(key) {
@@ -62,7 +63,7 @@ function getVersions(query, envs, diffOnly = false) {
     return fetch('https://vera.adeo.no/api/v1/deploylog?onlyLatest=true&filterUndeployed=true')
         .then((resp) => resp.json())
         .then((deployments) => deployments
-            .filter((deployment) => deployment.application.includes(query))
+            .filter((deployment) => fuzzysearch(query, deployment.application))
             .filter((deployment) => envs.includes(deployment.environment)))
         .then(groupApplication(diffOnly));
 }
