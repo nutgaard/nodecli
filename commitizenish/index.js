@@ -2,6 +2,8 @@
 const inquirer = require('inquirer');
 const execa = require('execa');
 const logging = require('./../utils/logging');
+const LocalStorage = require('./../utils/localstorage');
+const localstorage = new LocalStorage('commitizenish');
 
 const types = {
     feat: 'A new feature',
@@ -42,10 +44,22 @@ function lagCommitMelding(resp) {
     return `[${resp.changetype}][${resp.issue || '-'}] `;
 }
 
+function saveState(state) {
+    const typeIndex = Object.keys(types).indexOf(state.changetype);
+    const issue = state.issue;
+
+    if (issue) {
+        localstorage.setAll({ typeIndex, issue });
+    } else {
+        localstorage.setAll({ typeIndex });
+    }
+}
+
 inquirer.prompt([
     {
         type: 'list',
         name: 'changetype',
+        default: localstorage.get('typeIndex'),
         message: `Type of change?`,
         choices: toChoiceList(types),
         pageSize: 4 * Object.keys(types).length
@@ -53,10 +67,12 @@ inquirer.prompt([
     {
         type: 'input',
         name: 'issue',
+        default: localstorage.get('issue'),
         message: 'Issue (PK/PKULV etc)?',
         when: (resp) => ['feat', 'fix', 'perf', 'test'].includes(resp.changetype)
     }
 ]).then((resp) => {
+    saveState(resp);
     try {
         execa.shellSync(`git commit -m "${lagCommitMelding(resp)}" -e`, { stdio: 'inherit' })
     } catch (e) {
