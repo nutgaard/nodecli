@@ -5,9 +5,7 @@ const request = require('request-promise');
 const open = require('open');
 const diffCommand = require('./diff-command');
 const miljoMapper = require('./miljoer');
-
-const brukernavn = process.env.domenebrukernavn;
-const passord = process.env.domenepassord;
+const jiradeploy = require('./../utils/jiradeploy');
 
 const jiraUrl = 'https://jira.adeo.no';
 
@@ -20,10 +18,10 @@ function promptApps(query, env1, env2) {
     }]).then((apps) => ({ apps: apps.apps, data, query, env1, env2 }))
 }
 
-function deployApps({ apps, data, query, env1, env2 }) {
+function deployApps({ apps, data, env1, env2 }) {
     const deploys = apps.map((app) => {
         logging.info(`Bestiller til ${app}:${data[app][env1][0].version} til ${env2} (${miljoMapper[env2]})`);
-        return deploy(app, data[app][env1][0].version, miljoMapper[env2])
+        return jiradeploy(app, data[app][env1][0].version, miljoMapper[env2])
             .then((res) => {
                 logging.info(`Bestilt ${res.key} (${app})`);
                 return res;
@@ -53,49 +51,6 @@ function deployApps({ apps, data, query, env1, env2 }) {
             })
         }
     })
-}
-
-function deploy(app, version, miljo) {
-    const json = {
-        fields: {
-            project: {
-                key: 'DEPLOY'
-            },
-            issuetype: {
-                id: '10902'
-            },
-            customfield_14811: {
-                id: miljo,
-                value: miljo
-            },
-            customfield_14812: app + ':' + version,
-            summary: 'Automatisk deploy'
-        }
-    };
-
-    return post(`${jiraUrl}/rest/api/2/issue`, brukernavn, passord, json)
-        .catch((error) => {
-            logging.error("Noe gikk feil", error);
-            return {
-                ok: false
-            };
-        });
-}
-
-function post(url, username, password, json) {
-    return request({
-        method: 'POST',
-        uri: url,
-        body: json,
-        json: true,
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        auth: {
-            user: username,
-            pass: password
-        }
-    });
 }
 
 module.exports = function (query, env1, env2) {
