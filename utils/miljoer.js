@@ -1,8 +1,6 @@
 // For Ã¥ legge til nye miljÃ¸er her kan du lete etter miljÃ¸et du er interessert i herfra http://jira.adeo.no/rest/api/2/issue/createmeta?projectKeys=DEPLOY&expand=projects.issuetypes.fields og legge til "navn": "id" i denne lista. Deretter mÃ¥ du gjÃ¸re en pull av den nye koden og en restart av navbot pÃ¥ serveren, se README
 
 module.exports = {
-    "None": "",
-    "none": "16568",
     "t0": "16556",
     "t1": "16557",
     "t2": "16558",

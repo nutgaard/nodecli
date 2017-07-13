@@ -10,7 +10,8 @@
     "vera": "./vera/index.js",
     "open": "./open/index.js",
     "commit": "./commitizenish/index.js",
-    "branch": "./branch/index.js"
+    "branch": "./branch/index.js",
+    "deploy": "./deploy/index.js"
   },
   "dependencies": {
     "chalk": "^1.1.3",

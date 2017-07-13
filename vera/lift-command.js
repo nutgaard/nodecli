@@ -4,7 +4,7 @@ const inquirer = require('inquirer');
 const request = require('request-promise');
 const open = require('open');
 const diffCommand = require('./diff-command');
-const miljoMapper = require('./miljoer');
+const miljoMapper = require('./../utils/miljoer');
 const jiradeploy = require('./../utils/jiradeploy');
 
 const jiraUrl = 'https://jira.adeo.no';

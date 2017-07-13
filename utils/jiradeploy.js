@@ -1,6 +1,7 @@
 const logging = require('./../utils/logging');
 const request = require('request-promise');
 
+const jiraUrl = 'https://jira.adeo.no';
 const brukernavn = process.env.domenebrukernavn;
 const passord = process.env.domenepassord;
 
