@@ -21,8 +21,12 @@ function checkDir() {
 class Localstorage {
     constructor(name) {
         checkDir();
-        this.file = path.resolve('/nodecli-tmp', `${name}.config`);
+        this.file = Localstorage.getFile(`${name}.config`);
         this.content = load(this.file);
+    }
+
+    static getFile(name) {
+        return path.resolve('/nodecli-tmp', name);
     }
 
     get(key) {
