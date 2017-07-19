@@ -13,12 +13,6 @@ npm link
 
 ### Kommandoer
 `npm link` setter opp flere ulike kommandoer som er tilgjengelige på ditt shell etter kommendoen er kjørt.
- 
-#### branch
-```
-branch list             - tilsvarende git branch -a
-branch prune            - kjører 'git remote prune origin', og prøver deretter å finne alle lokale branches som ikke er på remote
-```
 
 #### commit
 ```
@@ -28,16 +22,6 @@ commit                  - Gir det ett preset at endrings-typer alà conventional
 #### deploy
 ```
 deploy <app> <miljø> <versjon> - Bestiller jira-deploy
-```
-
-#### deploydaemon
-Denne er ikke nødvendig å kalle selv, alle andre kommandoer som deployer vil automatisk starte daemonen. 
-```
-deploydaemon status     - Status på daemon
-deploydaemon start      - Start daemon
-deploydaemon stop       - Stop daemon
-deploydaemon kill       - Kill daemon
-deploydaemon restart    - Restart daemon
 ```
 
 #### open cisbl
@@ -85,3 +69,18 @@ Bruker `vera diff` for å finne applikasjoner, gir deg mulighet til å velge hvi
 vera lift <query> <env1> <env2> - Løft alle applikasjoner som ikke er like fra <env1> til <env2>
 ```
 
+#### branch
+```
+branch list             - tilsvarende git branch -a
+branch prune            - kjører 'git remote prune origin', og prøver deretter å finne alle lokale branches som ikke er på remote
+```
+
+#### deploydaemon
+Denne er ikke nødvendig å kalle selv, alle andre kommandoer som deployer vil automatisk starte daemonen. 
+```
+deploydaemon status     - Status på daemon
+deploydaemon start      - Start daemon
+deploydaemon stop       - Stop daemon
+deploydaemon kill       - Kill daemon
+deploydaemon restart    - Restart daemon
+```
