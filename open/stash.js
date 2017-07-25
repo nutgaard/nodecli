@@ -9,12 +9,16 @@ module.exports = function (query) {
     if (!query || query === '.') {
 
         const regex = /origin.*?([\w-]+)\/([\w-]+)\.git/g;
-        const message = execa.shellSync('git remote -v');
-        const match = regex.exec(message.stdout);
+        const message = execa.shellSync('git remote -v').stdout;
+        const match = regex.exec(message);
         const project = match[1];
         const repo = match[2];
 
-        open(`http://stash.devillo.no/projects/${project}/repos/${repo}/browse`);
+        if (message.includes('stash.devillo.no')) {
+            open(`http://stash.devillo.no/projects/${project}/repos/${repo}/browse`);
+        } else {
+            open(`https://github.com/navikt/${repo}`);
+        }
     } else {
         logging.debug(`Searching for ${query}`);
         fetch(`http://stash.devillo.no/rest/api/latest/repos?name=${query}`, { method: 'GET' })
