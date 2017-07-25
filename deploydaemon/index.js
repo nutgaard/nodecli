@@ -1,3 +1,4 @@
+#!node
 const daemon = require('./daemon');
 
 switch (process.argv[2]) {
