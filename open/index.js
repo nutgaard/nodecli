@@ -7,7 +7,8 @@ const commands = {
     vera: require('./vera'),
     stash: require('./stash'),
     fasit: require('./fasit'),
-    cisbl: require('./cisbl')
+    cisbl: require('./cisbl'),
+    app: require('./app'),
 };
 
 if (!commands[command]) {
