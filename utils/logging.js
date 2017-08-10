@@ -1,4 +1,5 @@
 const chalk = require('chalk');
+const strip = require('strip-ansi');
 
 const DEBUG = { level: 1, prefix: chalk.blue('[DEBUG]') };
 const INFO = { level: 2, prefix: chalk.white('[INFO]') };
@@ -19,27 +20,32 @@ function test(level) {
 }
 
 function log(level, msg, ...extra) {
-    test(level) && console.log(`${level.prefix} ${msg}`, ...extra);
+    if (test(level)) {
+        const message = `${level.prefix} ${msg}`;
+        console.log(message, ...extra);
+        return strip(message).length;
+    }
+    return -1;
 }
 
 function debug(msg, ...extra) {
-    log(DEBUG, msg, ...extra);
+    return log(DEBUG, msg, ...extra);
 }
 
 function info(msg, ...extra) {
-    log(INFO, msg, ...extra);
+    return log(INFO, msg, ...extra);
 }
 
 function warn(msg, ...extra) {
-    log(WARN, msg, ...extra);
+    return log(WARN, msg, ...extra);
 }
 
 function error(msg, ...extra) {
-    log(ERROR, msg, ...extra);
+    return log(ERROR, msg, ...extra);
 }
 
 function fatal(msg, ...extra) {
-    log(FATAL, msg, ...extra);
+    return log(FATAL, msg, ...extra);
 }
 function pure(...args) {
     console.log(...args);

@@ -12,7 +12,8 @@
     "commit": "./commitizenish/index.js",
     "branch": "./branch/index.js",
     "deploydaemon": "./deploydaemon/index.js",
-    "deploy": "./deploy/index.js"
+    "deploy": "./deploy/index.js",
+    "cluster": "./cluster/index.js"
   },
   "dependencies": {
     "chalk": "^1.1.3",
