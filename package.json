@@ -13,7 +13,8 @@
     "branch": "./branch/index.js",
     "deploydaemon": "./deploydaemon/index.js",
     "deploy": "./deploy/index.js",
-    "cluster": "./cluster/index.js"
+    "cluster": "./cluster/index.js",
+    "cat": "./cat/index.js"
   },
   "dependencies": {
     "chalk": "^1.1.3",
