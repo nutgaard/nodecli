@@ -14,7 +14,11 @@
     "deploydaemon": "./deploydaemon/index.js",
     "deploy": "./deploy/index.js",
     "cluster": "./cluster/index.js",
-    "cat": "./cat/index.js"
+    "cat": "./cat/index.js",
+    "version": "./version/index.js",
+    "versjon": "./version/index.js",
+    "snapshots": "./snapshots/index.js",
+    "snaps": "./snapshots/index.js"
   },
   "dependencies": {
     "chalk": "^1.1.3",
@@ -29,6 +33,7 @@
     "regedit": "^2.2.7",
     "request": "^2.81.0",
     "request-promise": "^4.2.1",
+    "xml2js": "^0.4.19",
     "yargs": "^8.0.1"
   }
 }
