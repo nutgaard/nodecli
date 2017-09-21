@@ -71,6 +71,20 @@ Bruker `vera diff` for å finne applikasjoner, gir deg mulighet til å velge hvi
 vera lift <query> <env1> <env2> - Løft alle applikasjoner som ikke er like fra <env1> til <env2>
 ```
 
+#### version / versjon
+Lokaliserer nærmeste `pom.xml` eller `package.json`, og printer ut hvilken versjon som er satt i filen.
+```
+version                 - 
+versjon                 - 
+```
+
+#### snapshots / snaps
+Lokaliserer nærmeste `pom.xml`, og printer ut alle avhengigheter som har SNAPSHOT-version.
+```
+snapshots               - 
+snaps                   - 
+```
+
 #### branch
 ```
 branch list             - tilsvarende git branch -a
