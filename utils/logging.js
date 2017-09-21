@@ -6,6 +6,7 @@ const INFO = { level: 2, prefix: chalk.white('[INFO]') };
 const WARN = { level: 3, prefix: chalk.yellow('[WARN]') };
 const ERROR = { level: 4, prefix: chalk.red('[ERROR]') };
 const FATAL = { level: 5, prefix: chalk.bold.red('[ERROR]') };
+const OK = { level: 5, prefix: chalk.green('[OK]') };
 const logLevels = {
     DEBUG,
     INFO,
@@ -44,6 +45,10 @@ function error(msg, ...extra) {
     return log(ERROR, msg, ...extra);
 }
 
+function ok(msg, ...extra) {
+    return log(OK, msg, ...extra);
+}
+
 function fatal(msg, ...extra) {
     return log(FATAL, msg, ...extra);
 }
@@ -62,6 +67,7 @@ module.exports = {
     info,
     warn,
     error,
+    ok,
     fatal,
     pure,
     spacer
