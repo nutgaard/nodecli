@@ -17,6 +17,7 @@
     "cat": "./cat/index.js",
     "version": "./version/index.js",
     "versjon": "./version/index.js",
+    "login": "./login/index.js",
     "snapshots": "./snapshots/index.js",
     "snaps": "./snapshots/index.js"
   },
