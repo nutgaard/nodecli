@@ -1,4 +1,5 @@
 const log = require('./utils/logging');
+const execa = require('execa');
 const fs = require('fs');
 const path = require('path');
 const regedit = require('regedit');
@@ -28,6 +29,22 @@ if (!fs.existsSync(tmpDir)) {
     log.info('Temp-directory already exists', tmpDir);
 }
 log.spacer();
+
+log.info('Checking Putty install...');
+let hasPutty = false;
+try {
+    execa.shellSync('where putty').stdout;
+    hasPutty = true;
+} catch (e) {
+    hasPutty = false;
+}
+
+if (!hasPutty) {
+    log.error('You have to install putty...');
+    return;
+}
+log.spacer();
+
 
 const regValue = 'AutoRun';
 const regkey = 'HKLM\\SOFTWARE\\Microsoft\\Command\ Processor';
