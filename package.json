@@ -22,6 +22,7 @@
     "snaps": "./snapshots/index.js"
   },
   "dependencies": {
+    "base-64": "^0.1.0",
     "chalk": "^1.1.3",
     "cli-table": "^0.3.1",
     "daemonize2": "^0.4.2",
