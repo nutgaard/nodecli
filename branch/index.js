@@ -5,7 +5,9 @@ const argv = require('yargs').argv;
 const command = argv._.splice(0, 1);
 const commands = {
     list: require('./list'),
-    prune: require('./prune')
+    prune: require('./prune'),
+    checkout: require('./checkout'),
+    co: require('./checkout')
 };
 
 if (!commands[command]) {
@@ -13,5 +15,5 @@ if (!commands[command]) {
     return;
 }
 
-commands[command](argv);
+commands[command](...argv._);
 logging.spacer();

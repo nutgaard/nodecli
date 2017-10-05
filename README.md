@@ -94,6 +94,7 @@ snaps                   -
 ```
 branch list             - tilsvarende git branch -a
 branch prune            - kjører 'git remote prune origin', og prøver deretter å finne alle lokale branches som ikke er på remote
+branch co <query>       - søker etter matchende branch, og kjører git checkout <branch> om den finner en match
 ```
 
 #### deploydaemon
