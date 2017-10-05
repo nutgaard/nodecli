@@ -16,6 +16,11 @@ npm link
 ### Kommandoer
 `npm link` setter opp flere ulike kommandoer som er tilgjengelige på ditt shell etter kommendoen er kjørt.
 
+#### login
+```
+login ssh <env> <app>   - Logger deg inn på nodene til app i ett gitt miljø
+```
+
 #### commit
 ```
 commit                  - Gir det ett preset at endrings-typer alà conventional-changelog
