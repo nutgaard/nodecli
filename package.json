@@ -19,7 +19,9 @@
     "versjon": "./version/index.js",
     "login": "./login/index.js",
     "snapshots": "./snapshots/index.js",
-    "snaps": "./snapshots/index.js"
+    "snaps": "./snapshots/index.js",
+    "files": "./files/files.js",
+    "lines": "./files/lines.js"
   },
   "dependencies": {
     "base-64": "^0.1.0",
