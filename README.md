@@ -97,6 +97,16 @@ branch prune            - kjører 'git remote prune origin', og prøver deretter
 branch co <query>       - søker etter matchende branch, og kjører git checkout <branch> om den finner en match
 ```
 
+#### lines
+```
+lines <filter>          - Finner alle filer gitt <filter> og teller antall linjer (MaxDepth: 10)
+```
+
+#### files
+```
+files <filter>          - Finner alle filter gitt <filter> (MaxDepth: 10)
+```
+
 #### deploydaemon
 Denne er ikke nødvendig å kalle selv, alle andre kommandoer som deployer vil automatisk starte daemonen. 
 ```
