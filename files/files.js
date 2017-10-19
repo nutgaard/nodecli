@@ -13,3 +13,5 @@ logging.spacer();
 
 files.forEach((file) => logging.pure(file));
 logging.spacer();
+logging.info(`Fant ${files.length} filer...`)
+logging.spacer();

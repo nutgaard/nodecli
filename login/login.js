@@ -1,4 +1,5 @@
 const cp = require('child_process');
+const Levenshtein = require('levenshtein');
 const logging = require('./../utils/logging');
 const inquirer = require('inquirer');
 const Fetcher = require('./../utils/fetch');
@@ -19,7 +20,8 @@ function getCredentialsFromFasit(node) {
 }
 
 function getHostname(environment, application) {
-    return Fetcher.fetchJson(`https://fasit.adeo.no/api/v2/applicationinstances?environment=${environment}&application=${application}`)
+    return Fetcher.fetchJson(`https://fasit.adeo.no/api/v2/applicationinstances?environment=${environment}&application=${application}&usage=true`)
+        .then((resp) => resp.sort((a, b) => new Levenshtein(a.application, b.application).distance))
         .then((resp) => resp[0].cluster.ref)
         .then((clusterRef) => Fetcher.fetchJson(clusterRef))
         .then((cluster) => cluster.nodes.map((node) => node.name))

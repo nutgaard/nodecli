@@ -3,16 +3,21 @@ const logging = require('./../utils/logging');
 const argv = require('yargs').argv;
 
 const command = argv._.splice(0, 1);
+const helpCmd = require('./help-command');
 const commands = {
     lift: require('./lift-command'),
     diff: require('./diff-command'),
     sjekk: require('./sjekk-command'),
+    redeploy: require('./redeploy-command'),
+    help: helpCmd
 };
 
-if (!commands[command]) {
+let cmd = commands[command];
+if (!cmd) {
     logging.error('Unknown command');
-    return;
+    logging.spacer();
+    cmd = helpCmd;
 }
 
-commands[command](...argv._);
+cmd(...argv._);
 logging.spacer(2);

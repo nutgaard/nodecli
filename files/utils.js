@@ -9,7 +9,7 @@ const defaultOptions = {
 
 function getFiles(dir, filter, opts = {}) {
     const basename = path.basename(dir);
-    const workingOpts = Object.assign({}, { depth: 0 },  opts, defaultOptions);
+    const workingOpts = Object.assign({}, { depth: 0 }, opts, defaultOptions);
 
     if (workingOpts.depth > workingOpts.maxDepth) {
         return [];
@@ -20,7 +20,7 @@ function getFiles(dir, filter, opts = {}) {
 
     const isDirectory = fs.lstatSync(dir).isDirectory();
     if (!isDirectory) {
-        return [ dir ];
+        return [dir];
     }
 
     let newOpts = Object.assign({}, workingOpts, { depth: workingOpts.depth + 1 });
@@ -41,7 +41,27 @@ function getContent(file) {
     return fs.readFileSync(file, 'utf-8');
 }
 
+function getLineCount(file) {
+    return new Promise((resolve, reject) => {
+        let lineCount = 0;
+        fs.createReadStream(file)
+            .on('data', (buffer) => {
+                let idx = -1;
+                lineCount--;
+                do {
+                    idx = buffer.indexOf(10, idx + 1);
+                    lineCount++;
+                } while (idx !== -1);
+            })
+            .on('end', () => {
+                resolve(lineCount);
+            })
+            .on('error', reject);
+    })
+}
+
 module.exports = {
     getFiles,
-    getContent
+    getContent,
+    getLineCount
 };

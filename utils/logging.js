@@ -60,6 +60,9 @@ function spacer(nof = 1) {
         console.log('');
     }
 }
+function line(length = 15) {
+    pure(new Array(length).fill('-').join(''));
+}
 
 module.exports = {
     logLevels,
@@ -70,5 +73,6 @@ module.exports = {
     ok,
     fatal,
     pure,
-    spacer
+    spacer,
+    line
 };

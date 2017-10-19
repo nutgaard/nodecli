@@ -1,13 +1,14 @@
 const fetch = require('node-fetch');
+const logging = require('./../utils/logging');
 const Utils = require('./utils');
 
 module.exports = function (query, ...envs) {
     if (!query || query.length === 0) {
-        Utils.error('Må sende med query...');
+        logging.error('Må sende med query...');
         return;
     }
     if (!envs || envs.length === 0) {
-        Utils.error('Må sende med envs...');
+        logging.error('Må sende med envs...');
         return;
     }
 
