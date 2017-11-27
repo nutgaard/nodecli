@@ -18,7 +18,7 @@ npm link
 
 #### skya
 ```
-skya ssh <env> <app>   - Logger deg inn på nodene til app i ett gitt miljø
+skya login <env> <app>   - Logger deg inn på nodene til app i ett gitt miljø
 skya nodes <env> <app>   - Lister ut alle nodene for app i ett gitt miljø
 skya restart <env> <app>   - Restarter alle noder for app i ett gitt miljø
 ```
