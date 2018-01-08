@@ -1,8 +1,10 @@
 const fetchImpl = require('node-fetch');
 const base64 = require('base-64');
+const logging = require('./logging');
+const credentials = require('./credentials');
 
-const username = process.env.domenebrukernavn;
-const password = process.env.domenepassord;
+const username = credentials.domenebrukernavn;
+const password = credentials.domenepassord;
 
 const fetchbase = (reader) => (input, init) => {
     if (init && init.headers) {

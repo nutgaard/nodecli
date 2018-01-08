@@ -1,13 +1,15 @@
-const log = require('./utils/logging');
 const execa = require('execa');
 const fs = require('fs');
 const path = require('path');
 const regedit = require('regedit');
+const log = require('./utils/logging');
+const credentials = require('./utils/credentials');
 
-const { domenebrukernavn, domenepassord, path: envPath } = process.env;
+const { path: envPath } = process.env;
+const { domenebrukernavn, domenepassord } = credentials;
 
 if (!domenebrukernavn && !domenepassord) {
-    log.error("Legg til miljøvariablene `domenebrukernavn` og `domenepassord`.")
+    log.error("Legg til variablene `domenebrukernavn` og `domenepassord` i fasit.properties.")
     return;
 }
 

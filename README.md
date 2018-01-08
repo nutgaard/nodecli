@@ -2,7 +2,7 @@
 
 Forskjellige CLI-utils bygget med nodeJS.
 
-Noen av kommandoene er avhengig av å kunne logge inn på ulike systemer, for at dette skal fungere må du sette opp miljøvariablene `domenebrukernavn` og `domenepassord` i windows. Og shelled må senere restartes.
+Noen av kommandoene er avhengig av å kunne logge inn på ulike systemer, for at dette skal fungere må du sette opp variablene `domenebrukernavn` og `domenepassord` i fasit.properties.
 
 
 #### For å sette opp

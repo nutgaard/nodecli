@@ -2,10 +2,11 @@ const os = require('os');
 const logging = require('./../utils/logging');
 const request = require('request-promise');
 const daemon = require('./../deploydaemon/daemon');
+const credentials = require('./../utils/credentials');
 
 const jiraUrl = 'https://jira.adeo.no';
-const brukernavn = process.env.domenebrukernavn;
-const passord = process.env.domenepassord;
+const brukernavn = credentials.domenebrukernavn;
+const passord = credentials.domenepassord;
 
 function put(url) {
     return request({
