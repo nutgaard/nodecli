@@ -8,4 +8,5 @@ DOSKEY gr=git rebase $*
 DOSKEY lg=git lg
 DOSKEY glg=git glg
 DOSKEY mci=mvn clean install $*
+DOSKEY mcd=mvn clean deploy $*
 DOSKEY =cls
