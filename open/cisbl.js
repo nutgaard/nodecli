@@ -1,4 +1,4 @@
-// http://cisbl.devillo.no/job/-forenklet-oppfolging-/job/veilarbdialog-pipeline/
+// http://bekkci.devillo.no/job/forenklet_oppfolging/job/veilarbdialog/job/master/
 const open = require('open');
 const fetch = require('node-fetch');
 const logging = require('./../utils/logging');
@@ -10,7 +10,7 @@ function openJob(jobDesc) {
         .map((fragment) => `job/${fragment}/`)
         .join('');
 
-    open(`http://cisbl.devillo.no/${jobUrl}`);
+    open(`http://bekkci.devillo.no/${jobUrl}`);
 }
 
 module.exports = function (query, suffix) {
@@ -18,7 +18,7 @@ module.exports = function (query, suffix) {
         const path = process.cwd().split('\\');
         query = path[path.length - 1] + '-' + suffix;
     }
-    fetch(`http://cisbl.devillo.no/search/suggest?query=${query}`)
+    fetch(`http://bekkci.devillo.no/search/suggest?query=${query}`)
         .then((resp) => resp.json())
         .then((data) => data.suggestions)
         .then((suggestions) => {
