@@ -37,6 +37,7 @@ module.exports = function deploy(app, version, miljo) {
 
     const uid = (''+Math.random()).slice(2);
     const callbackurl = `http://${os.hostname()}:31337/${uid}`;
+    const localhostUrl = `http://localhost:31337/${uid}`;
 
     const json = {
         fields: {
@@ -58,7 +59,7 @@ module.exports = function deploy(app, version, miljo) {
 
     return post(`${jiraUrl}/rest/api/2/issue`, brukernavn, passord, json)
         .then((resp) => {
-            put(`${callbackurl}/${resp.key}`);
+            put(`${localhostUrl}/${resp.key}`);
             return resp;
         })
         .catch((error) => {
