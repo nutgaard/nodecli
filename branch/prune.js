@@ -44,6 +44,7 @@ module.exports = function (args) {
         logging.info("No branches to prune...");
         return;
     }
+    const force = args === 'force';
 
     inquirer.prompt([{
         type: 'checkbox',
@@ -51,5 +52,5 @@ module.exports = function (args) {
         message: `Delete branches?`,
         choices: localNotInRemote,
         pageSize: localNotInRemote.length + 10
-    }]).then(({ branches }) => branches.forEach(deleteBranch(args.force)))
+    }]).then(({ branches }) => branches.forEach(deleteBranch(force)))
 };
