@@ -8,6 +8,7 @@ const commands = {
     stash: require('./stash'),
     fasit: require('./fasit'),
     cisbl: require('./cisbl'),
+    ci: require('./ci'),
     app: require('./app'),
 };
 
