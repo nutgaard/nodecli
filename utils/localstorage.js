@@ -33,6 +33,10 @@ class Localstorage {
         return this.content[key];
     }
 
+    has(key) {
+        return this.content.hasOwnProperty(key);
+    }
+
     set(key, value) {
         this.content[key] = value;
         save(this.file, this.content);

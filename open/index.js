@@ -10,6 +10,8 @@ const commands = {
     cisbl: require('./cisbl'),
     ci: require('./ci'),
     app: require('./app'),
+    pr: require('./pr'),
+    jira: require('./jira'),
 };
 
 if (!commands[command]) {

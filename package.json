@@ -21,7 +21,9 @@
     "snapshots": "./snapshots/index.js",
     "snaps": "./snapshots/index.js",
     "files": "./files/files.js",
-    "lines": "./files/lines.js"
+    "lines": "./files/lines.js",
+    "go": "./goto/goto.js",
+    "godirs": "./goto/gotodirs.js"
   },
   "dependencies": {
     "base-64": "^0.1.0",
