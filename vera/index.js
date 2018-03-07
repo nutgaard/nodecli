@@ -1,23 +1,11 @@
 #!node
-const logging = require('./../utils/logging');
-const argv = require('yargs').argv;
+const Cli = require('./../utils/cliutils').Cli;
 
-const command = argv._.splice(0, 1);
-const helpCmd = require('./help-command');
-const commands = {
+const cli = new Cli('vera', {
     lift: require('./lift-command'),
     diff: require('./diff-command'),
     sjekk: require('./sjekk-command'),
-    redeploy: require('./redeploy-command'),
-    help: helpCmd
-};
+    redeploy: require('./redeploy-command')
+});
 
-let cmd = commands[command];
-if (!cmd) {
-    logging.error('Unknown command');
-    logging.spacer();
-    cmd = helpCmd;
-}
-
-cmd(...argv._);
-logging.spacer(2);
+cli.run();

@@ -1,8 +1,7 @@
 // http://stash.devillo.no/plugins/servlet/search?q=veilarbportefolje
 const open = require('open');
 const execa = require('execa');
-const fetch = require('node-fetch');
-const inquirer = require('inquirer');
+const getPRUrl = require('./../utils/gitutils').getPRUrl;
 const logging = require('./../utils/logging');
 
 function exec(str) {
@@ -21,16 +20,14 @@ function max(...args) {
 function hasLocalChanges() {
     const diff = exec('git diff --name-only').length;
     const diffcache = exec('git diff --cached --name-only').length;
-    const unpushed = exec('git cherry -v').length;
     const untracked = exec('git ls-files --exclude-standard --other').length;
 
-    const changes = max(diff, diffcache, unpushed, untracked);
+    const changes = max(diff, diffcache, untracked);
     if (changes > 0) {
         const l = logging.error('You got local changes in this repository...');
         logging.line(l);
         logging.pure(`Diff\t\t${diff}`);
         logging.pure(`Diffcache\t${diffcache}`);
-        logging.pure(`Unpushed\t${unpushed}`);
         logging.pure(`Untracked\t${untracked}`);
         logging.line(l);
         logging.spacer();
@@ -40,14 +37,6 @@ function hasLocalChanges() {
 
 function getBranchConfig() {
     const branchlist = exec('git branch -a');
-    const remotes = exec('git remote -v');
-
-    const isStash = remotes
-        .some((remote) => remote.startsWith('origin') && remote.includes('stash.devillo.no'));
-
-    const isGithub = remotes
-        .some((remote) => remote.startsWith('origin') && remote.includes('github.com'));
-
 
     const current = branchlist
         .find((branch) => branch.startsWith('*'))
@@ -60,18 +49,16 @@ function getBranchConfig() {
     return {
         current,
         currentRemote,
-        isCurrentRemote,
-        isStash,
-        isGithub
+        isCurrentRemote
     };
 }
 
-function stashUrl(fromBranch) {
+function stashUrl(appnavn, fromBranch) {
     const source = encodeURIComponent(fromBranch);
-    return `http://stash.devillo.no/projects/FO/repos/veilarbaktivitet/pull-requests?create&sourceBranch=refs%2Fheads%2F${source}&targetBranch=refs%2Fheads%2Fmaster`
+    return `http://stash.devillo.no/projects/FO/repos/${appnavn}/pull-requests?create&sourceBranch=refs%2Fheads%2F${source}&targetBranch=refs%2Fheads%2Fmaster`
 }
-function githubUrl(fromBranch) {
-    return `https://github.com/navikt/veilarbportefoljeflatefs/compare/${fromBranch}?expand=1`;
+function githubUrl(appnavn, fromBranch) {
+    return `https://github.com/navikt/${appnavn}/compare/${fromBranch}?expand=1`;
 }
 
 module.exports = function () {
@@ -81,11 +68,9 @@ module.exports = function () {
 
     const branchconfig = getBranchConfig();
     if (!branchconfig.isCurrentRemote) {
-        logging.error('Branch not found on remote');
-        return;
-    } else if (branchconfig.isGithub) {
-        open(githubUrl(branchconfig.current));
-    } else if (branchconfig.isStash) {
-        open(stashUrl(branchconfig.current));
+        logging.info('Branch not found on remote, pushing...');
+        exec(`git push -u origin ${branchconfig.current}`);
     }
+
+    open(getPRUrl(branchconfig.current));
 };

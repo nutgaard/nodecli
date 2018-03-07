@@ -1,9 +1,8 @@
 const Utils = require('./utils');
+const Command = require('./../utils/cliutils').Command;
 const logging = require('./../utils/logging');
 const inquirer = require('inquirer');
-const request = require('request-promise');
 const open = require('open');
-const diffCommand = require('./diff-command');
 const miljoMapper = require('./../utils/miljoer');
 const jiradeploy = require('./../utils/jiradeploy');
 
@@ -53,17 +52,28 @@ function deployApps({ apps, data, env1 }) {
     })
 }
 
-module.exports = function (query, env1) {
-    if (!query || query.length === 0) {
-        logging.error('Må sende med query...');
-        return;
-    }
-    if (!env1 || env1.length === 0) {
-        logging.error('Må sende med env1...');
-        return;
+class RedeployCommand extends Command {
+    execute(query, env1) {
+        if (!query || query.length === 0) {
+            logging.error('Må sende med query...');
+            return;
+        }
+        if (!env1 || env1.length === 0) {
+            logging.error('Må sende med env1...');
+            return;
+        }
+
+        Utils.getVersions(query, [env1], false)
+            .then(promptApps(query, env1))
+            .then(deployApps);
     }
 
-    Utils.getVersions(query, [env1], false)
-        .then(promptApps(query, env1))
-        .then(deployApps);
-};
+    help() {
+        return {
+            args: '<query> <env1>',
+            msg: 'Redeployes applications matchin `query` in `env1`'
+        }
+    }
+}
+
+module.exports = new RedeployCommand();

@@ -1,7 +1,7 @@
 const Utils = require('./utils');
+const Command = require('./../utils/cliutils').Command;
 const logging = require('./../utils/logging');
 const inquirer = require('inquirer');
-const request = require('request-promise');
 const open = require('open');
 const diffCommand = require('./diff-command');
 const miljoMapper = require('./../utils/miljoer');
@@ -53,22 +53,32 @@ function deployApps({ apps, data, env1, env2 }) {
     })
 }
 
-module.exports = function (query, env1, env2) {
-    if (!query || query.length === 0) {
-        logging.error('Må sende med query...');
-        return;
-    }
-    if (!env1 || env1.length === 0) {
-        logging.error('Må sende med env1...');
-        return;
-    }
-    if (!env2 || env2.length === 0) {
-        logging.error('Må sende med env2...');
-        return;
+class LiftCommand extends Command {
+    execute(query, env1, env2) {
+        if (!query || query.length === 0) {
+            logging.error('Må sende med query...');
+            return;
+        }
+        if (!env1 || env1.length === 0) {
+            logging.error('Må sende med env1...');
+            return;
+        }
+        if (!env2 || env2.length === 0) {
+            logging.error('Må sende med env2...');
+            return;
+        }
+
+        diffCommand.execute(query, env1, env2)
+            .then(promptApps(query, env1, env2))
+            .then(deployApps);
     }
 
-    diffCommand(query, env1, env2)
-        .then(promptApps(query, env1, env2))
-        .then(deployApps)
-    ;
-};
+    help() {
+        return {
+            args: '<query> <env1> <env2>',
+            msg: 'Deployes the difference in versions for application matching `query` from `env1` to `env2`'
+        }
+    }
+}
+
+module.exports = new LiftCommand();
