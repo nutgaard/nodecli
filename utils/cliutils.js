@@ -79,7 +79,7 @@ class Cli {
     }
 
     run() {
-        const command = argv._.splice(0, 1)[0];
+        const command = argv._.splice(0, 1)[0] || '';
         logging.debug('Found command', command);
         const commandExec = this.commands[command];
 

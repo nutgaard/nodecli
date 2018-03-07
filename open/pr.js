@@ -2,6 +2,7 @@
 const open = require('open');
 const execa = require('execa');
 const getPRUrl = require('./../utils/gitutils').getPRUrl;
+const hasLocalChangesUtils = require('./../utils/gitutils').hasLocalChanges;
 const logging = require('./../utils/logging');
 
 function exec(str) {
@@ -12,25 +13,19 @@ function exec(str) {
         .filter((line) => line.length > 0);
 }
 
-function max(...args) {
-    return args
-        .reduce((a, b) => Math.max(a, b), Number.MIN_SAFE_INTEGER);
-}
-
 function hasLocalChanges() {
-    const diff = exec('git diff --name-only').length;
-    const diffcache = exec('git diff --cached --name-only').length;
-    const untracked = exec('git ls-files --exclude-standard --other').length;
+    const changes = hasLocalChangesUtils();
 
-    const changes = max(diff, diffcache, untracked);
-    if (changes > 0) {
+    if (changes !== false) {
         const l = logging.error('You got local changes in this repository...');
         logging.line(l);
-        logging.pure(`Diff\t\t${diff}`);
-        logging.pure(`Diffcache\t${diffcache}`);
-        logging.pure(`Untracked\t${untracked}`);
+        logging.pure(`Diff\t\t${changes.diff}`);
+        logging.pure(`Diffcache\t${changes.diffcache}`);
+        logging.pure(`Untracked\t${changes.untracked}`);
         logging.line(l);
         logging.spacer();
+
+        return true;
     }
     return false;
 }
@@ -51,14 +46,6 @@ function getBranchConfig() {
         currentRemote,
         isCurrentRemote
     };
-}
-
-function stashUrl(appnavn, fromBranch) {
-    const source = encodeURIComponent(fromBranch);
-    return `http://stash.devillo.no/projects/FO/repos/${appnavn}/pull-requests?create&sourceBranch=refs%2Fheads%2F${source}&targetBranch=refs%2Fheads%2Fmaster`
-}
-function githubUrl(appnavn, fromBranch) {
-    return `https://github.com/navikt/${appnavn}/compare/${fromBranch}?expand=1`;
 }
 
 module.exports = function () {

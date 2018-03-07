@@ -1,13 +1,29 @@
 const path = require('path');
 const execa = require('execa');
 
+function exec(str) {
+    return execa.shellSync(str)
+        .stdout
+        .split('\n')
+        .map((line) => line.trim())
+        .filter((line) => line.length > 0);
+}
+
+function max(...args) {
+    return args
+        .reduce((a, b) => Math.max(a, b), Number.MIN_SAFE_INTEGER);
+}
+
 function getGitRoot() {
-    return execa.shellSync('git rev-parse --show-toplevel').stdout
+    try {
+        return execa.shellSync('git rev-parse --show-toplevel').stdout;
+    } catch (e) {
+        return false;
+    }
 }
 
 function getOrigin() {
-    const remoteOrigin = execa.shellSync('git remote -v').stdout
-        .split('\n')
+    const remoteOrigin = exec('git remote -v')
         .find((line) => line.startsWith('origin') && line.endsWith('(push)'));
 
     if (!remoteOrigin) {
@@ -38,11 +54,24 @@ function getPRUrl(fromBranch) {
     }
 }
 
+function hasLocalChanges() {
+    const diff = exec('git diff --name-only').length;
+    const diffcache = exec('git diff --cached --name-only').length;
+    const untracked = exec('git ls-files --exclude-standard --other').length;
+
+    const changes = max(diff, diffcache, untracked);
+    if (changes > 0) {
+        return { diff, diffcache, untracked };
+    }
+    return false;
+}
+
 function getAppname() {
     return path.basename(getGitRoot());
 }
 
 module.exports = {
+    hasLocalChanges,
     getOrigin,
     getGitRoot,
     getAppname,
