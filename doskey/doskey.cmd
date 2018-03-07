@@ -10,4 +10,5 @@ DOSKEY glg=git glg
 DOSKEY mci=mvn clean install $*
 DOSKEY mcd=mvn clean deploy $*
 DOSKEY jo=open jira $*
+DOSKEY co=git co $*
 DOSKEY =cls
