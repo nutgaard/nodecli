@@ -20,7 +20,7 @@ function scangit(source) {
     return hasLocalChanges();
 }
 
-const parallellism = 1;
+const parallellism = 8;
 class ScangitCommand extends Command {
     execute() {
         let workers;
@@ -50,6 +50,7 @@ class ScangitCommand extends Command {
                     workers.forEach((worker) => worker.kill('SIGINT'));
                     this.printdata(response);
                     clearInterval(interval);
+					console.log(`I scanned ${response.length} directories for you...`);
                 }
             }, 500);
 
