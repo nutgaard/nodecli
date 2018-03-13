@@ -31,6 +31,7 @@
     "base-64": "^0.1.0",
     "chalk": "^1.1.3",
     "cli-table": "^0.3.1",
+    "clipboardy": "^1.2.3",
     "daemonize2": "^0.4.2",
     "execa": "^0.7.0",
     "fuzzysearch": "^1.0.3",
