@@ -3,14 +3,18 @@ const fs = require('fs');
 const path = require('path');
 const regedit = require('regedit');
 const log = require('./utils/logging');
-const credentials = require('./utils/credentials');
 
+const isInternal = process.argv[2] !== 'external';
 const { path: envPath } = process.env;
-const { domenebrukernavn, domenepassord } = credentials;
 
-if (!domenebrukernavn && !domenepassord) {
-    log.error("Legg til variablene `domenebrukernavn` og `domenepassord` i fasit.properties.")
-    return;
+if (isInternal) {
+    const credentials = require('./utils/credentials');
+    const { domenebrukernavn, domenepassord } = credentials;
+
+    if (!domenebrukernavn && !domenepassord) {
+        log.error("Legg til variablene `domenebrukernavn` og `domenepassord` i fasit.properties.")
+        return;
+    }
 }
 
 const marksPaths = path.join(process.cwd(), 'marks');
@@ -32,20 +36,22 @@ if (!fs.existsSync(tmpDir)) {
 }
 log.spacer();
 
-log.info('Checking Putty install...');
-let hasPutty = false;
-try {
-    execa.shellSync('where putty').stdout;
-    hasPutty = true;
-} catch (e) {
-    hasPutty = false;
-}
+if (isInternal) {
+    log.info('Checking Putty install...');
+    let hasPutty = false;
+    try {
+        execa.shellSync('where putty').stdout;
+        hasPutty = true;
+    } catch (e) {
+        hasPutty = false;
+    }
 
-if (!hasPutty) {
-    log.error('You have to install putty...');
-    return;
+    if (!hasPutty) {
+        log.error('You have to install putty...');
+        return;
+    }
+    log.spacer();
 }
-log.spacer();
 
 
 const regValue = 'AutoRun';
@@ -79,3 +85,5 @@ regedit.list(regkey, (err, result) => {
         }
     }
 });
+
+console.log(execa.shellSync('npm link').stdout);
