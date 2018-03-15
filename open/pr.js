@@ -59,5 +59,6 @@ module.exports = function () {
         exec(`git push -u origin ${branchconfig.current}`);
     }
 
-    open(getPRUrl(branchconfig.current));
+    getPRUrl(branchconfig.current)
+        .then(open);
 };

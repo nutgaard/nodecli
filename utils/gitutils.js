@@ -1,5 +1,6 @@
 const path = require('path');
 const execa = require('execa');
+const fetchJson = require('./fetch').fetchJson;
 
 function exec(str) {
     return execa.shellSync(str)
@@ -48,9 +49,19 @@ function getPRUrl(fromBranch) {
     const origin = getOrigin();
 
     if (origin.isGithub) {
-        return `https://github.com/navikt/${origin.repo}/compare/${fromBranch}?expand=1`;
+        return Promise.resolve(`https://github.com/navikt/${origin.repo}/compare/${fromBranch}?expand=1`);
     } else {
-        return `http://stash.devillo.no/projects/${origin.project}/repos/${origin.repo}/pull-requests?create&sourceBranch=refs%2Fheads%2F${fromBranch}&targetBranch=refs%2Fheads%2Fmaster`
+        return fetchJson(`http://stash.devillo.no/rest/api/1.0/projects/${origin.project}/repos/${origin.repo}/pull-requests`)
+            .then((json) => {
+                const openPr = json.values
+                    .find((pr) => pr.fromRef.displayId === fromBranch);
+
+                if (openPr) {
+                    return `http://stash.devillo.no/projects/${origin.project}/repos/${origin.repo}/pull-requests/${openPr.id}/overview`;
+                } else {
+                    return `http://stash.devillo.no/projects/${origin.project}/repos/${origin.repo}/pull-requests?create&sourceBranch=refs%2Fheads%2F${fromBranch}&targetBranch=refs%2Fheads%2Fmaster`;
+                }
+            });
     }
 }
 
