@@ -1,6 +1,5 @@
 @echo off
 
-REM "%IDEA_HOME%\idea64.exe" "%cd%"
 SETLOCAL
 if "%1" == "" (
     SET openpath=%cd%
