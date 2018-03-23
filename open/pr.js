@@ -3,6 +3,8 @@ const open = require('open');
 const execa = require('execa');
 const getPRUrl = require('./../utils/gitutils').getPRUrl;
 const hasLocalChangesUtils = require('./../utils/gitutils').hasLocalChanges;
+const getCurrentBranch = require('./../utils/gitutils').getCurrentBranch;
+const getRemoteBranches = require('./../utils/gitutils').getRemoteBranches;
 const logging = require('./../utils/logging');
 
 function exec(str) {
@@ -31,15 +33,9 @@ function hasLocalChanges() {
 }
 
 function getBranchConfig() {
-    const branchlist = exec('git branch -a');
-
-    const current = branchlist
-        .find((branch) => branch.startsWith('*'))
-        .slice(2);
-
-    const currentRemote = branchlist
-        .find((branch) => branch.includes(`remotes/origin/${current}`));
-    const isCurrentRemote = !!currentRemote;
+    const current = getCurrentBranch();
+    const isCurrentRemote = getRemoteBranches().includes(current);
+    const currentRemote = isCurrentRemote ? `remotes/origin/${current}` : undefined;
 
     return {
         current,

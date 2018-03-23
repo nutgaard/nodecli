@@ -81,10 +81,22 @@ function getAppname() {
     return path.basename(getGitRoot());
 }
 
+function getCurrentBranch() {
+    return exec('git rev-parse --abbrev-ref HEAD')[0];
+}
+
+function getRemoteBranches() {
+    const lsRemote = exec('git ls-remote --heads origin');
+    return lsRemote
+        .map((remoteHead) => remoteHead.replace(/^.+?refs\/heads\//, ''))
+}
+
 module.exports = {
     hasLocalChanges,
     getOrigin,
     getGitRoot,
     getAppname,
-    getPRUrl
+    getPRUrl,
+    getCurrentBranch,
+    getRemoteBranches
 };
