@@ -48,7 +48,7 @@ open cisbl tps master   - Vil søke etter jobben tps-master og åpne denne.
 open fasit <query>      - Åpner https://fasit.adeo.no/search?q=<query> 
 ```
 
-#### open fasit
+#### open stash
 ``` 
 open stash .            - Åpner stash basert på `git remote -v` (origin)
 open stash [query]      - Søker etter repos, og viser muligheten for å velge hvilken du vil åpne of det er flere treff
