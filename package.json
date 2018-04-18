@@ -36,6 +36,7 @@
     "execa": "^0.7.0",
     "fuzzysearch": "^1.0.3",
     "inquirer": "^3.0.6",
+    "inquirer-autocomplete-prompt": "^0.12.2",
     "levenshtein": "^1.0.5",
     "node-fetch": "^1.6.3",
     "node-notifier": "^5.1.2",
