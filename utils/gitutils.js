@@ -36,13 +36,9 @@ function getOrigin() {
 
     const remoteFragments = remoteOrigin.split(/[/.]/);
     const repo = remoteFragments[remoteFragments.length - 2];
+    const project = remoteFragments[remoteFragments.length - 3];
 
-    if (isGithub) {
-        return { isGithub, isStash, repo };
-    } else if (isStash) {
-        const project = remoteFragments[remoteFragments.length - 3];
-        return { isGithub, isStash, repo, project };
-    }
+    return { isGithub, isStash, repo, project };
 }
 
 function getPRUrl(fromBranch) {

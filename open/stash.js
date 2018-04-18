@@ -3,21 +3,19 @@ const open = require('open');
 const execa = require('execa');
 const fetch = require('node-fetch');
 const inquirer = require('inquirer');
+const getOrigin = require('./../utils/gitutils').getOrigin;
 const logging = require('./../utils/logging');
 
 module.exports = function (query) {
     if (!query || query === '.') {
+        const origin = getOrigin();
 
-        const regex = /origin.*?([\w-]+)\/([\w-]+)\.git/g;
-        const message = execa.shellSync('git remote -v').stdout;
-        const match = regex.exec(message);
-        const project = match[1];
-        const repo = match[2];
-
-        if (message.includes('stash.devillo.no')) {
-            open(`http://stash.devillo.no/projects/${project}/repos/${repo}/browse`);
+        if (origin.isStash) {
+            open(`http://stash.devillo.no/projects/${origin.project}/repos/${origin.repo}/browse`);
+        } else if (origin.isGithub) {
+            open(`https://github.com/${origin.project}/${origin.repo}`);
         } else {
-            open(`https://github.com/navikt/${repo}`);
+            throw new Error("Could not find origin: " + JSON.stringify(origin, null, 2));
         }
     } else {
         logging.debug(`Searching for ${query}`);
