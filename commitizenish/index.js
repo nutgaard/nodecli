@@ -13,22 +13,22 @@ function lagCommitMelding(resp) {
 }
 
 const previousIssues = localstorage.get('issues') || [];
-console.log('previousIssues', previousIssues);
-
 
 function saveState(state) {
-    const issue = { issue: state.issue, time: new Date().getTime() };
     const issues = new Set(previousIssues);
-    issues.add(issue);
+    issues.add(state.issue);
 
     const issueArray = Array.from(issues)
-        .sort((a, b) => a.time - b.time)
         .slice(0, 10);
 
     localstorage.setAll({ issues: issueArray });
 }
 
 function getAns(answersSoFar, input) {
+    if (input == null) {
+        return Promise.resolve(previousIssues);
+    }
+
     return new Promise((resolve) => {
         const matching = previousIssues
             .filter((issue) => fuzzysearch(input, issue));
