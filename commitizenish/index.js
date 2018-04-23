@@ -31,7 +31,7 @@ function getAns(answersSoFar, input) {
 
     return new Promise((resolve) => {
         const matching = previousIssues
-            .filter((issue) => fuzzysearch(input, issue));
+            .filter((issue) => fuzzysearch(input, issue.toLowerCase()));
 
         resolve(matching);
     });
