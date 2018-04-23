@@ -8,15 +8,29 @@ const localstorage = new LocalStorage('commitizenish');
 
 inquirer.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'));
 
+function parseResponse(resp) {
+    const spaceIndex = resp.indexOf(' ');
+
+    if (spaceIndex >= 0) {
+        const issue = resp.slice(0, spaceIndex).toUpperCase();
+        const msg = resp.slice(spaceIndex + 1);
+        return { issue, msg };
+    } else {
+        return { issue: resp, msg: '' };
+    }
+}
+
 function lagCommitMelding(resp) {
-    return `[${resp.issue}] `.toUpperCase();
+    const { issue, msg } = parseResponse(resp.issue);
+    return `[${issue}] ${msg}`;
 }
 
 const previousIssues = localstorage.get('issues') || [];
 
 function saveState(state) {
     const issues = new Set(previousIssues);
-    issues.add(state.issue);
+    const { issue } = parseResponse(state.issue);
+    issues.add(issue);
 
     const issueArray = Array.from(issues)
         .slice(0, 10);
@@ -28,10 +42,10 @@ function getAns(answersSoFar, input) {
     if (input == null) {
         return Promise.resolve(previousIssues);
     }
-
+    const search = parseResponse(input).issue.toLowerCase();
     return new Promise((resolve) => {
         const matching = previousIssues
-            .filter((issue) => fuzzysearch(input.toLowerCase(), issue.toLowerCase()));
+            .filter((issue) => fuzzysearch(search, issue.toLowerCase()));
 
         resolve(matching);
     });
