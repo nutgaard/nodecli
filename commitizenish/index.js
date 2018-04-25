@@ -3,6 +3,7 @@ const inquirer = require('inquirer');
 const execa = require('execa');
 const fuzzysearch = require('fuzzysearch');
 const logging = require('./../utils/logging');
+const lastCommitMessages = require('./../utils/gitutils').getLastCommitMessages;
 const LocalStorage = require('./../utils/localstorage');
 const localstorage = new LocalStorage('commitizenish');
 
@@ -51,19 +52,38 @@ function getAns(answersSoFar, input) {
     });
 }
 
-inquirer.prompt([
-    {
-        type: 'autocomplete',
-        name: 'issue',
-        message: 'Issue?',
-        suggestOnly: true,
-        source: getAns
-    }
-]).then((resp) => {
-    saveState(resp);
-    try {
-        execa.shellSync(`git commit -m "${lagCommitMelding(resp)}" -e`, { stdio: 'inherit' })
-    } catch (e) {
-        logging.error("Could not commit", e);
-    }
-});
+if (process.argv[2] === 'last') {
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'message',
+            message: 'Commit?',
+            suggestOnly: true,
+            choices: lastCommitMessages(3)
+        }
+    ]).then((resp) => {
+        try {
+            execa.shellSync(`git commit -m "${resp.message}" -e`, { stdio: 'inherit' })
+        } catch (e) {
+            logging.error("Could not commit", e);
+        }
+    });
+} else {
+    inquirer.prompt([
+        {
+            type: 'autocomplete',
+            name: 'issue',
+            message: 'Issue?',
+            suggestOnly: true,
+            source: getAns
+        }
+    ]).then((resp) => {
+        saveState(resp);
+        try {
+            execa.shellSync(`git commit -m "${lagCommitMelding(resp)}" -e`, { stdio: 'inherit' })
+        } catch (e) {
+            logging.error("Could not commit", e);
+        }
+    });
+}
+

@@ -87,6 +87,11 @@ function getRemoteBranches() {
         .map((remoteHead) => remoteHead.replace(/^.+?refs\/heads\//, ''))
 }
 
+function getLastCommitMessages(lastN = 10) {
+    return exec(`git log -${lastN} --oneline`)
+        .map((commit) => commit.slice(8));
+}
+
 module.exports = {
     hasLocalChanges,
     getOrigin,
@@ -94,5 +99,6 @@ module.exports = {
     getAppname,
     getPRUrl,
     getCurrentBranch,
-    getRemoteBranches
+    getRemoteBranches,
+    getLastCommitMessages
 };
