@@ -25,7 +25,8 @@
     "go": "./goto/goto.js",
     "godirs": "./goto/gotodirs.js",
     "scangit": "./scangit/index.js",
-    "app": "./app/index.js"
+    "app": "./app/index.js",
+    "show": "./show/index.js"
   },
   "dependencies": {
     "base-64": "^0.1.0",
