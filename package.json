@@ -26,7 +26,8 @@
     "godirs": "./goto/gotodirs.js",
     "scangit": "./scangit/index.js",
     "app": "./app/index.js",
-    "show": "./show/index.js"
+    "show": "./show/index.js",
+    "kubedash": "./kubedash/kubedash.js"
   },
   "dependencies": {
     "base-64": "^0.1.0",
