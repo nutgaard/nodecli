@@ -29,14 +29,14 @@ function lagCommitMelding(resp) {
 const previousIssues = localstorage.get('issues') || [];
 
 function saveState(state) {
-    const issues = new Set(previousIssues);
     const { issue } = parseResponse(state.issue);
-    issues.add(issue);
 
-    const issueArray = Array.from(issues)
-        .slice(0, 10);
+    const newIssues = [
+        issue,
+        ...previousIssues.filter((prev) => prev !== issue)
+    ].slice(0, 10);
 
-    localstorage.setAll({ issues: issueArray });
+    localstorage.setAll({ issues: newIssues });
 }
 
 function getAns(answersSoFar, input) {

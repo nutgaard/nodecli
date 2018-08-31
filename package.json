@@ -22,6 +22,7 @@
     "snaps": "./snapshots/index.js",
     "files": "./files/files.js",
     "lines": "./files/lines.js",
+    "grouplines": "./files/grouplines.js",
     "go": "./goto/goto.js",
     "godirs": "./goto/gotodirs.js",
     "scangit": "./scangit/index.js",

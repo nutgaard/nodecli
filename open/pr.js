@@ -8,6 +8,7 @@ const getRemoteBranches = require('./../utils/gitutils').getRemoteBranches;
 const logging = require('./../utils/logging');
 
 function exec(str) {
+    console.log('[EXEC]', str);
     return execa.shellSync(str)
         .stdout
         .split('\n')
@@ -35,6 +36,7 @@ function hasLocalChanges() {
 function getBranchConfig() {
     const current = getCurrentBranch();
     const isCurrentRemote = getRemoteBranches().includes(current);
+    console.log('', );
     const currentRemote = isCurrentRemote ? `remotes/origin/${current}` : undefined;
 
     return {
