@@ -1,4 +1,4 @@
-#!node
+#!/usr/local/bin/node
 const logging = require('./../utils/logging');
 const argv = require('yargs').argv;
 

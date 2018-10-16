@@ -1,4 +1,4 @@
-// http://stash.devillo.no/plugins/servlet/search?q=veilarbportefolje
+const Command = require('./../utils/cliutils').Command;
 const open = require('open');
 const execa = require('execa');
 const getPRUrl = require('./../utils/gitutils').getPRUrl;
@@ -36,7 +36,6 @@ function hasLocalChanges() {
 function getBranchConfig() {
     const current = getCurrentBranch();
     const isCurrentRemote = getRemoteBranches().includes(current);
-    console.log('', );
     const currentRemote = isCurrentRemote ? `remotes/origin/${current}` : undefined;
 
     return {
@@ -46,17 +45,26 @@ function getBranchConfig() {
     };
 }
 
-module.exports = function () {
-    if (hasLocalChanges()) {
-        return;
+module.exports = class PrCommand extends Command {
+    execute() {
+        if (hasLocalChanges()) {
+            return;
+        }
+
+        const branchconfig = getBranchConfig();
+        if (!branchconfig.isCurrentRemote) {
+            logging.info('Branch not found on remote, pushing...');
+            exec(`git push -u origin ${branchconfig.current}`);
+        }
+
+        getPRUrl(branchconfig.current)
+            .then(open);
     }
 
-    const branchconfig = getBranchConfig();
-    if (!branchconfig.isCurrentRemote) {
-        logging.info('Branch not found on remote, pushing...');
-        exec(`git push -u origin ${branchconfig.current}`);
+    help() {
+        return {
+            args: '',
+            msg: 'Opens PR view for current branch.'
+        }
     }
-
-    getPRUrl(branchconfig.current)
-        .then(open);
 };

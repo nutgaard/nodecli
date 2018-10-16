@@ -32,7 +32,7 @@ function getOrigin() {
     }
 
     const isGithub = remoteOrigin.includes('github.com');
-    const isStash = remoteOrigin.includes('stash.devillo.no');
+    const isStash = remoteOrigin.includes('intra.eika.no');
 
     const remoteFragments = remoteOrigin.split(/[/.]/);
     const repo = remoteFragments[remoteFragments.length - 2];
@@ -47,15 +47,15 @@ function getPRUrl(fromBranch) {
     if (origin.isGithub) {
         return Promise.resolve(`https://github.com/navikt/${origin.repo}/compare/${fromBranch}?expand=1`);
     } else {
-        return fetchJson(`http://stash.devillo.no/rest/api/1.0/projects/${origin.project}/repos/${origin.repo}/pull-requests`)
+        return fetchJson(`https://git.intra.eika.no/rest/api/1.0/projects/${origin.project}/repos/${origin.repo}/pull-requests`)
             .then((json) => {
                 const openPr = json.values
                     .find((pr) => pr.fromRef.displayId === fromBranch);
 
                 if (openPr) {
-                    return `http://stash.devillo.no/projects/${origin.project}/repos/${origin.repo}/pull-requests/${openPr.id}/overview`;
+                    return `https://git.intra.eika.no/projects/${origin.project}/repos/${origin.repo}/pull-requests/${openPr.id}/overview`;
                 } else {
-                    return `http://stash.devillo.no/projects/${origin.project}/repos/${origin.repo}/pull-requests?create&sourceBranch=refs%2Fheads%2F${fromBranch}&targetBranch=refs%2Fheads%2Fmaster`;
+                    return `https://git.intra.eika.no/projects/${origin.project}/repos/${origin.repo}/pull-requests?create&sourceBranch=refs%2Fheads%2F${fromBranch}&targetBranch=refs%2Fheads%2Fdevelop`;
                 }
             });
     }

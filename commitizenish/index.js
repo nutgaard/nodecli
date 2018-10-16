@@ -1,4 +1,4 @@
-#!node
+#!/usr/local/bin/node
 const inquirer = require('inquirer');
 const execa = require('execa');
 const fuzzysearch = require('fuzzysearch');
@@ -23,7 +23,7 @@ function parseResponse(resp) {
 
 function lagCommitMelding(resp) {
     const { issue, msg } = parseResponse(resp.issue);
-    return `[${issue}] ${msg}`;
+    return `${issue} ${msg}`;
 }
 
 const previousIssues = localstorage.get('issues') || [];

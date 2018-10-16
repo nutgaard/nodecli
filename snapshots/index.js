@@ -1,4 +1,4 @@
-#!node
+#!/usr/local/bin/node
 const fs = require('fs');
 const path = require('path');
 const execa = require('execa');

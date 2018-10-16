@@ -1,5 +1,16 @@
-//https://vera.adeo.no/#/matrix?apps=veilarb*&envs=t4%2Cq5
+const Command = require('./../utils/cliutils').Command;
 const open = require('open');
-module.exports = function(issue) {
-    open(`https://jira.adeo.no/browse/${issue}`);
-};
+
+
+module.exports = class JiraCommand extends Command {
+    execute(issue) {
+        open(`https://jira.intra.eika.no/browse/${issue}`);
+    }
+
+    help() {
+        return {
+            args: '<issueKey>',
+            msg: 'Jira-issue'
+        };
+    }
+}

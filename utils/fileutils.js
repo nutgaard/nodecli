@@ -7,6 +7,13 @@ const defaultOptions = {
     maxDepth: 10
 };
 
+function filterFn(filter) {
+    if (typeof filter === 'string') {
+        return (file) => fuzzysearch(filter, file);
+    }
+    return filter;
+}
+
 function getFiles(dir, filter, opts = {}) {
     const basename = path.basename(dir);
     const workingOpts = Object.assign({}, { depth: 0 }, opts, defaultOptions);
@@ -32,12 +39,23 @@ function getFiles(dir, filter, opts = {}) {
 
     if (filter) {
         return allFiles
-            .filter((file) => fuzzysearch(filter, file));
+            .filter(filterFn(filter));
     }
     return allFiles;
 }
 
-function getContent(file) {
+function getContent(file, async = false) {
+    if (async) {
+        return new Promise((resolve, reject) => {
+            fs.readFile(file, 'utf-8', (err, data) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(data);
+                }
+            })
+        });
+    }
     return fs.readFileSync(file, 'utf-8');
 }
 
