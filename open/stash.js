@@ -1,6 +1,6 @@
 const Command = require('./../utils/cliutils').Command;
 const open = require('open');
-const fetch = require('node-fetch');
+const fetch = require('./../utils/fetch').fetchJson;
 const inquirer = require('inquirer');
 const getOrigin = require('./../utils/gitutils').getOrigin;
 const logging = require('./../utils/logging');
@@ -20,7 +20,6 @@ module.exports = class StashCommand extends Command {
         } else {
             logging.debug(`Searching for ${query}`);
             fetch(`http://git.intra.eika.no/rest/api/latest/repos?name=${query}`, {method: 'GET'})
-                .then((res) => res.json())
                 .then(({values}) => values.map(({name, links}) => ({name, value: links.self[0].href})))
                 .then((choices) => {
                     logging.debug('Choices', choices);

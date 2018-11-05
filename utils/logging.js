@@ -64,6 +64,49 @@ function line(length = 15) {
     pure(new Array(length).fill('-').join(''));
 }
 
+
+function capitalize(s) {
+    return s[0].toUpperCase() + s.slice(1);
+}
+function padTo(lengths) {
+    return (str, index) => {
+        const padLength = lengths[index] - str.toString().length;
+        const padding = new Array(padLength).fill(' ').join('');
+        return `${str}${padding}`;
+    }
+}
+function table(data, formatter) {
+    if (data.length === 0) {
+        return;
+    }
+    const headers = Object.keys(data[0]);
+    const columnValues = headers.map((header) => [header].concat(data.map((line) => line[header])));
+    const columnWidth = columnValues.map((values, columnIndex) => {
+        const columnId = headers[columnIndex];
+        const formatting = (formatter && formatter[columnId]) || ((s) => s);
+        return values
+            .map(formatting)
+            .map((s) => s.toString().length)
+            .reduce((a, b) => Math.max(a, b), 0);
+    });
+
+    const headerLog = `| ${headers.map(capitalize).map(padTo(columnWidth)).join(' | ')} |`;
+    line(headerLog.length);
+    pure(headerLog);
+    line(headerLog.length);
+    data.forEach((row) => {
+        const rowLog = Object.keys(row)
+            .map((key, columnIndex) => {
+                const columnId = headers[columnIndex];
+                const formatting = (formatter && formatter[columnId]) || ((s) => s);
+                return formatting(row[key]);
+            })
+            .map(padTo(columnWidth));
+        pure(`| ${rowLog.join(' | ')} |`);
+    });
+    line(headerLog.length);
+}
+
 module.exports = {
     logLevels,
     debug,
@@ -74,5 +117,6 @@ module.exports = {
     fatal,
     pure,
     spacer,
-    line
+    line,
+    table
 };

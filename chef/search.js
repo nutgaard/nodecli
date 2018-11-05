@@ -1,42 +1,26 @@
-const path = require('path');
-const homedir = require('os').homedir();
-const minimatch = require('minimatch');
-
 const Command = require('./../utils/cliutils').Command;
 const Log = require('./../utils/logging');
-const FileUtils = require('./../utils/fileutils');
+const ChefUtils = require('./utils');
+const Science = require('./../utils/science');
+const path = require('path');
 
-function search(query) {
-    const queryRegex = new RegExp(`\\s[":,]*?([^\\s":,]*${query}[^\\s":,]*)[":,]*?\\s`);
-    return (file) => {
-        return FileUtils.getContent(file, true)
-            .then((content) => {
-                const match = queryRegex.exec(content);
-                if (match) {
-                    return match[1];
-                }
-                return null;
-            });
-    }
-}
 function joinResult(results) {
-    return Array.from(new Set(results.filter((result) => !!result)));
+    return results
+        .reduce((a, b) => a.concat(b))
+        .filter((res) => !!res);
 }
 
 module.exports = class SearchCommand extends Command {
     execute(query) {
-        const filter = (file) => minimatch(file, "**/data_bags/artifacts*/*.json") || minimatch(file, '**/data_bags/artifacts_openshift_sikkersone_dev/*.json');
-        const files = FileUtils.getFiles(path.join(homedir, 'code', 'chef'), filter);
+        const files = ChefUtils.getQAArtifactFiles();
 
-        Promise.all(files.map(search(query)))
+        Promise.all(files.map(Science.test(ChefUtils.search, ChefUtils.search2)(query)))
             .then(joinResult)
             .then((result) => {
-                const l = Log.info(`Found ${result} matches`);
-                Log.line(l);
-                result.forEach((r) => Log.pure(`\t${r}`));
-                Log.spacer(2)
+                Log.pure(`Found ${Object.keys(result).length} matches`);
+                Log.table(result, { file(name) { return path.basename(name); } });
+                Log.spacer(2);
             });
-
     }
 
     help() {
@@ -46,3 +30,21 @@ module.exports = class SearchCommand extends Command {
         };
     }
 };
+//
+// console.time('read');
+// const queryRegex = new RegExp(`\\s[":,]*?([^\\s":,]*akp[^\\s":,]*)[":,]*?\\s`);
+// const contentList = ChefUtils.getQAArtifactFiles().map((file) => FileUtils.getContent(file));
+// console.timeEnd('read');
+//
+// console.time('search2');
+// const data = contentList.map((content) => !!content.match(queryRegex));
+// console.timeEnd('search2');
+//
+// console.time('search');
+// const data2 = contentList.map((content) => JsonUtils.searchJson(content, 'akp'));
+// console.timeEnd('search');
+//
+// console.log('files', JSON.stringify(contentList).length / 1024 / 1024, 'mb'); // eslint-disable-line
+
+// console.log('data', data); // eslint-disable-line
+// console.log('data2', data2); // eslint-disable-line

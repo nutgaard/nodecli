@@ -26,7 +26,7 @@ function lagCommitMelding(resp) {
     return `${issue} ${msg}`;
 }
 
-const previousIssues = localstorage.get('issues') || [];
+const previousIssues = (localstorage.get('issues') || []).map((ans) => `${ans} `);
 
 function saveState(state) {
     const { issue } = parseResponse(state.issue);

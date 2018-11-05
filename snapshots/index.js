@@ -33,6 +33,9 @@ function injectProperties(properties) {
         const execRes = varRegex.exec(dependency.version);
         if (execRes) {
             const [, varName] = execRes;
+            if (!properties[varName]) {
+                throw new Error('Undefined variables: ' + varName);
+            }
             return Object.assign(dependency, { version: properties[varName]} );
         }
         return dependency;
@@ -63,7 +66,7 @@ function handlePomXml(file) {
         const properties = fixXMLStructure(result.project.properties ? result.project.properties[0]: {});
 
         const snapshots = getDependenciesDefinition(result, properties)
-            .filter(({ version }) => version.includes('SNAPSHOT'))
+            .filter(({ version }) => version && version.includes('SNAPSHOT'))
             .map(toPrintStatement)
             .sort();
 
