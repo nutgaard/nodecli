@@ -14,6 +14,8 @@ const logLevels = {
     ERROR
 };
 
+let memory = [];
+
 global.logLevel = logLevels.INFO;
 
 function test(level) {
@@ -70,7 +72,7 @@ function capitalize(s) {
 }
 function padTo(lengths) {
     return (str, index) => {
-        const padLength = lengths[index] - str.toString().length;
+        const padLength = lengths[index] - strip(str.toString()).length;
         const padding = new Array(padLength).fill(' ').join('');
         return `${str}${padding}`;
     }
@@ -86,7 +88,7 @@ function table(data, formatter) {
         const formatting = (formatter && formatter[columnId]) || ((s) => s);
         return values
             .map(formatting)
-            .map((s) => s.toString().length)
+            .map((s) => strip(s.toString()).length)
             .reduce((a, b) => Math.max(a, b), 0);
     });
 
@@ -107,8 +109,32 @@ function table(data, formatter) {
     line(headerLog.length);
 }
 
+function createCollector(fn) {
+    return (...args) => {
+        memory.push(() => fn(...args));
+    }
+}
+
+const collector = {
+    debug: createCollector(debug),
+    info: createCollector(info),
+    warn: createCollector(warn),
+    error: createCollector(error),
+    ok: createCollector(ok),
+    fatal: createCollector(fatal),
+    pure: createCollector(pure),
+    spacer: createCollector(spacer),
+    line: createCollector(line),
+    table: createCollector(table),
+    flush: () => {
+        memory.forEach((fn) => fn());
+        memory = [];
+    }
+};
+
 module.exports = {
     logLevels,
+    collector,
     debug,
     info,
     warn,

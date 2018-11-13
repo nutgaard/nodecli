@@ -22,6 +22,21 @@ function getAllArtifactFiles() {
     return getQAArtifactFiles().concat(getProdArtifactFiles());
 }
 
+function getAllDatabags() {
+    const filter = (file) => minimatch(file, "**/*_settings/*.json") || minimatch(file, "**/*_endpoints/*.json");
+    return FileUtils.getFiles(getChefPath(), filter);
+}
+
+function getQADatabags() {
+    return getAllDatabags()
+        .filter((file) => !file.includes('_prod'));
+}
+
+function getProdDatabags() {
+    return getAllDatabags()
+        .filter((file) => file.includes('_prod'));
+}
+
 function search(query) {
     const queryRegex = new RegExp(`\\s[":,]*?([^\\s":,]*${query}[^\\s":,]*)[":,]*?\\s`);
     return (file) => {
@@ -29,8 +44,6 @@ function search(query) {
             .then((content) => {
                 const match = queryRegex.exec(content);
                 if (match) {
-                    const expanded = match[0];
-                    const upIncludingMatch = content.substring(0, match.index + expanded.length);
                     return [{ file, key: match[1] }];
                 }
                 return [];
@@ -61,6 +74,9 @@ module.exports = {
     getQAArtifactFiles,
     getProdArtifactFiles,
     getAllArtifactFiles,
+    getAllDatabags,
+    getQADatabags,
+    getProdDatabags,
     search,
     search2,
     getChefPath
