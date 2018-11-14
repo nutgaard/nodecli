@@ -8,7 +8,11 @@ const password = credentials.domenepassord;
 
 const fetchbase = (reader) => (input, init) => {
     if (init && init.headers) {
-        init.headers.append('Authorization', `Basic ${base64.encode(`${username}:${password}`)}`);
+        if (init.headers.append) {
+            init.headers.append('Authorization', `Basic ${base64.encode(`${username}:${password}`)}`);
+        } else {
+            init.headers['Authorization'] = `Basic ${base64.encode(`${username}:${password}`)}`;
+        }
     } else {
         const headers = new fetchImpl.Headers();
         headers.append('Authorization', `Basic ${base64.encode(`${username}:${password}`)}`);
@@ -18,14 +22,14 @@ const fetchbase = (reader) => (input, init) => {
     return fetchImpl(input, init)
         .then((resp) => {
             if (!resp.ok) {
-                logging.error(resp);
-                throw new Error('Fetch failed', resp)
+                resp.text().then((t) => console.log(t));
+                throw new Error('Fetch failed', resp);
             } else {
                 return reader(resp);
             }
         }, (error) => {
-            logging.error(resp);
-            throw new Error('Fetch failed', resp)
+            logging.error(JSON.stringify(error, null, 2));
+            throw new Error('Fetch failed', error)
         });
 };
 
@@ -33,6 +37,7 @@ const fetchJson = fetchbase((resp) => resp.json());
 const fetchText = fetchbase((resp) => resp.text());
 
 module.exports = {
+    fetch: fetchbase((resp) => resp),
     fetchJson,
     fetchText
 };

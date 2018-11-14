@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const fuzzysearch = require('fuzzysearch');
+const GeneratorUtils = require('./generator-utils');
 
 const defaultOptions = {
     exclusions: ['node_modules', '.'],
@@ -78,8 +79,16 @@ function getLineCount(file) {
     })
 }
 
+function getContentReader(file) {
+    const lines = getContent(file)
+        .split('\n')
+        .map((line) => line.trim());
+    return GeneratorUtils.ofArray(lines);
+}
+
 module.exports = {
     getFiles,
     getContent,
-    getLineCount
+    getLineCount,
+    getContentReader
 };

@@ -17,7 +17,8 @@
     "scangit": "./scangit/index.js",
     "app": "./app/index.js",
     "show": "./show/index.js",
-    "chef": "./chef/index.js"
+    "chef": "./chef/index.js",
+    "vos": "./vos/index.js"
   },
   "dependencies": {
     "base-64": "^0.1.0",
