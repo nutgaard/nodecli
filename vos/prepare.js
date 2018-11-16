@@ -3,8 +3,8 @@ const fileUtils = require('./../utils/fileutils');
 const logging = require('./../utils/logging');
 
 const input = 'loginput.txt';
-const lostdocsFile = 'lostdoc2.txt';
-const dupprocFile = 'dupproc2.txt';
+const lostdocsFile = 'lostdoc.txt';
+const dupprocFile = 'dupproc.txt';
 
 const xmlRegex = /^<dom:claimId>(\d*(?:\.\d+)?)/;
 const dupRegex = /^DUPLICATE:(\d+(?:\.\d+)?)/;
