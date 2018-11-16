@@ -14,7 +14,7 @@ const pages = [
 
 const file = 'loginput.txt';
 
-module.exports = class JiraCommand extends Command {
+module.exports = class LostdocUpdateCommand extends Command {
     execute(issue) {
         if (!fs.existsSync(file)) {
             logging.error(`${file} not found in current directory`);

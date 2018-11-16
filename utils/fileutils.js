@@ -60,23 +60,27 @@ function getContent(file, async = false) {
     return fs.readFileSync(file, 'utf-8');
 }
 
-function getLineCount(file) {
-    return new Promise((resolve, reject) => {
-        let lineCount = 0;
-        fs.createReadStream(file)
-            .on('data', (buffer) => {
-                let idx = -1;
-                lineCount--;
-                do {
-                    idx = buffer.indexOf(10, idx + 1);
-                    lineCount++;
-                } while (idx !== -1);
-            })
-            .on('end', () => {
-                resolve(lineCount);
-            })
-            .on('error', reject);
-    })
+function getLineCount(file, async = true) {
+    if (async) {
+        return new Promise((resolve, reject) => {
+            let lineCount = 0;
+            fs.createReadStream(file)
+                .on('data', (buffer) => {
+                    let idx = -1;
+                    lineCount--;
+                    do {
+                        idx = buffer.indexOf(10, idx + 1);
+                        lineCount++;
+                    } while (idx !== -1);
+                })
+                .on('end', () => {
+                    resolve(lineCount);
+                })
+                .on('error', reject);
+        });
+    }
+
+    return getContent(file).split('\n').length;
 }
 
 function getContentReader(file) {
@@ -86,9 +90,28 @@ function getContentReader(file) {
     return GeneratorUtils.ofArray(lines);
 }
 
+function writeContent(file, ...content) {
+    fs.writeFileSync(file, content.join('\n'), 'utf-8');
+}
+
+function remove(file) {
+    try {
+        fs.unlinkSync(file)
+    } catch (e) {}
+}
+
+function createDir(dir) {
+    if (!fs.existsSync(dir)){
+        fs.mkdirSync(dir);
+    }
+}
+
 module.exports = {
     getFiles,
     getContent,
     getLineCount,
-    getContentReader
+    getContentReader,
+    writeContent,
+    remove,
+    createDir
 };
