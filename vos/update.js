@@ -27,7 +27,7 @@ module.exports = class LostdocUpdateCommand extends Command {
             return;
         }
 
-        const errors = pages.map(({query, title}) => {
+        const errors = pages.map(({query, pageId}) => {
             let matches = fileUtils
                 .getContentReader(file)
                 .skipWhile((line) => line !== query)
@@ -39,17 +39,15 @@ module.exports = class LostdocUpdateCommand extends Command {
                 matches = 'Ingen';
             }
 
-            return {query, title, matches};
+            return {query, pageId, matches};
         });
 
         errors.forEach(async ({pageId, matches}) => {
-            console.log('Updateing claims', pageId); // eslint-disable-line
             const confluenceData = await confluence.getPage(pageId);
             await confluence.upatePage(pageId, confluenceData.space.key, confluenceData.title, confluence.content.wiki(matches));
         });
 
         confluencePages.forEach(async ({pageId, file}) => {
-            console.log('Updateing other', pageId); // eslint-disable-line
             const confluenceData = await confluence.getPage(pageId);
             const content = fileUtils.getContent(file);
             await confluence.upatePage(pageId, confluenceData.space.key, confluenceData.title, confluence.content.wiki(content));
