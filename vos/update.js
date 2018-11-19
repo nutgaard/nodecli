@@ -7,9 +7,15 @@ const fs = require('fs');
 
 const confluenceSpaceId = 'PRFFE';
 const pages = [
-    { query: '<dom:claimId></dom:claimId>', title: 'claimId BLANK' },
-    { query: '<dom:claimId>000000</dom:claimId>', title: 'claimId 000000' },
-    { query: '<dom:claimId>000000.0</dom:claimId>', title: 'claimId 000000.0' },
+    {query: '<dom:claimId></dom:claimId>', pageId: '89228670'}, // claimId BLANK
+    {query: '<dom:claimId>000000</dom:claimId>', pageId: '89228666'}, // claimId 000000
+    {query: '<dom:claimId>000000.0</dom:claimId>', pageId: '89228668'} // claimId 000000.0
+];
+
+const confluencePages = [
+    {pageId: '88967274', file: 'error.txt' }, // Tjenestefeil ved send til arbeidslisten,
+    {pageId: '88967272', file: 'ikke-alle-ferdig.txt' }, // Ingen oppgave på skaden i arbeidslisten
+    {pageId: '88967276', file: 'dupproc.txt' } // Dupliserte processer
 ];
 
 const file = 'loginput.txt';
@@ -21,7 +27,7 @@ module.exports = class LostdocUpdateCommand extends Command {
             return;
         }
 
-        const errors = pages.map(({ query, title }) => {
+        const errors = pages.map(({query, title}) => {
             let matches = fileUtils
                 .getContentReader(file)
                 .skipWhile((line) => line !== query)
@@ -33,20 +39,17 @@ module.exports = class LostdocUpdateCommand extends Command {
                 matches = 'Ingen';
             }
 
-            return { query, title, matches };
+            return {query, title, matches};
         });
 
-        errors.forEach(async ({ title, matches }) => {
-            const response = await confluence.findPage(confluenceSpaceId, title);
-            if (response.results.length !== 1) {
-                logging.error(`Could not find confluence page with title ${title}`);
-                process.exit(1);
-            }
-            const pageid = response.results[0].id;
-            await confluence.upatePage(pageid, confluenceSpaceId, title, confluence.content.wiki(matches));
+        errors.forEach(async ({pageId, matches}) => {
+            await confluence.upatePage(pageId, confluenceSpaceId, null, confluence.content.wiki(matches));
         });
 
-
+        confluencePages.forEach(async ({ pageId, file }) => {
+            const content = await fileUtils.getContent(file, true);
+            await confluence.upatePage(pageId, confluenceSpaceId, null, confluence.content.wiki(content));
+        });
     }
 
     help() {
