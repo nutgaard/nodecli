@@ -43,11 +43,13 @@ module.exports = class LostdocUpdateCommand extends Command {
         });
 
         errors.forEach(async ({pageId, matches}) => {
+            console.log('Updateing claims', pageId); // eslint-disable-line
             const confluenceData = await confluence.getPage(pageId);
             await confluence.upatePage(pageId, confluenceData.space.key, confluenceData.title, confluence.content.wiki(matches));
         });
 
         confluencePages.forEach(async ({pageId, file}) => {
+            console.log('Updateing other', pageId); // eslint-disable-line
             const confluenceData = await confluence.getPage(pageId);
             const content = fileUtils.getContent(file);
             await confluence.upatePage(pageId, confluenceData.space.key, confluenceData.title, confluence.content.wiki(content));
