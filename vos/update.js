@@ -6,7 +6,6 @@ const confluence = require('./../utils/confluence');
 const fs = require('fs');
 const path = require('path');
 
-const confluenceSpaceId = 'PRFFE';
 const pages = [
     {query: '<dom:claimId></dom:claimId>', pageId: '89228670'}, // claimId BLANK
     {query: '<dom:claimId>000000</dom:claimId>', pageId: '89228666'}, // claimId 000000
@@ -14,9 +13,9 @@ const pages = [
 ];
 
 const confluencePages = [
-    {pageId: '88967274', file: path.join('out', 'error.txt') }, // Tjenestefeil ved send til arbeidslisten,
-    {pageId: '88967272', file: path.join('out', 'ikke-alle-ferdig.txt') }, // Ingen oppgave på skaden i arbeidslisten
-    {pageId: '88967276', file: 'dupproc.txt' } // Dupliserte processer
+    {pageId: '88967274', file: path.join('out', 'error.txt')}, // Tjenestefeil ved send til arbeidslisten,
+    {pageId: '88967272', file: path.join('out', 'ikke-alle-ferdig.txt')}, // Ingen oppgave på skaden i arbeidslisten
+    {pageId: '88967276', file: 'dupproc.txt'} // Dupliserte processer
 ];
 
 const file = 'loginput.txt';
@@ -44,19 +43,14 @@ module.exports = class LostdocUpdateCommand extends Command {
         });
 
         errors.forEach(async ({pageId, matches}) => {
-            await confluence.upatePage(pageId, confluenceSpaceId, null, confluence.content.wiki(matches));
+            const confluenceData = await confluence.getPage(pageId);
+            await confluence.upatePage(pageId, confluenceData.space.key, confluenceData.title, confluence.content.wiki(matches));
         });
 
-        confluencePages.forEach(async ({ pageId, file }) => {
-            try {
-                const confluenceData = await confluence.getPage(pageId);
-                const content = fileUtils.getContent(file);
-                console.log('linecount', content.split('\n').length); // eslint-disable-line
-                await confluence.upatePage(pageId, confluenceData.space.key, confluenceData.title, confluence.content.wiki(content));
-            } catch (e) {
-                console.log('ERRROR', e); // eslint-disable-line
-                throw new Error('Fail' + e);
-            }
+        confluencePages.forEach(async ({pageId, file}) => {
+            const confluenceData = await confluence.getPage(pageId);
+            const content = fileUtils.getContent(file);
+            await confluence.upatePage(pageId, confluenceData.space.key, confluenceData.title, confluence.content.wiki(content));
         });
     }
 
