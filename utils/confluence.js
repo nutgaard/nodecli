@@ -20,7 +20,7 @@ const content = {
 };
 
 function getPage(pageId) {
-    return fetch(`https://confluence.intra.eika.no/rest/api/content/${pageId}?expand=body.storage,version`)
+    return fetch(`https://confluence.intra.eika.no/rest/api/content/${pageId}?expand=body.storage,version,space`)
         .then((resp) => resp.json());
 }
 
