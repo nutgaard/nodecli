@@ -4,6 +4,7 @@ const fileUtils = require('./../utils/fileutils');
 const confluence = require('./../utils/confluence');
 
 const fs = require('fs');
+const path = require('path');
 
 const confluenceSpaceId = 'PRFFE';
 const pages = [
@@ -13,8 +14,8 @@ const pages = [
 ];
 
 const confluencePages = [
-    {pageId: '88967274', file: 'error.txt' }, // Tjenestefeil ved send til arbeidslisten,
-    {pageId: '88967272', file: 'ikke-alle-ferdig.txt' }, // Ingen oppgave på skaden i arbeidslisten
+    {pageId: '88967274', file: path.join('out', 'error.txt') }, // Tjenestefeil ved send til arbeidslisten,
+    {pageId: '88967272', file: path.join('out', 'ikke-alle-ferdig.txt') }, // Ingen oppgave på skaden i arbeidslisten
     {pageId: '88967276', file: 'dupproc.txt' } // Dupliserte processer
 ];
 
