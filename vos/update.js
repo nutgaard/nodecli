@@ -49,7 +49,8 @@ module.exports = class LostdocUpdateCommand extends Command {
 
         confluencePages.forEach(async ({pageId, file}) => {
             const confluenceData = await confluence.getPage(pageId);
-            const content = fileUtils.getContent(file);
+            const content = fileUtils.getContent(file).split('\n').join('\n\n');
+
             await confluence.upatePage(pageId, confluenceData.space.key, confluenceData.title, confluence.content.wiki(content));
         });
     }
