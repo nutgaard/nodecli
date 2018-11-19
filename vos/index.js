@@ -1,15 +1,14 @@
 #!/usr/local/bin/node
 const Cli = require('./../utils/cliutils').Cli;
 
-const LostdocUpdate = require('./lostdoc-update');
-const Checkdocks = require('./checkdocs');
 const Prepare = require('./prepare');
+const Checkdocks = require('./check');
+const LostdocUpdate = require('./update');
 
 const cli = new Cli('start', {
-    'update': new LostdocUpdate(),
+    'prepare': new Prepare(),
     'check': new Checkdocks(),
-    'prepare': new Prepare()
+    'update': new LostdocUpdate()
 });
-
 
 cli.run();
