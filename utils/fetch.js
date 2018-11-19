@@ -22,6 +22,7 @@ const fetchbase = (reader) => (input, init) => {
     return fetchImpl(input, init)
         .then((resp) => {
             if (!resp.ok) {
+                console.log('Something failed', resp); // eslint-disable-line
                 resp.text().then((t) => console.log(t));
                 throw new Error('Fetch failed', resp);
             } else {
