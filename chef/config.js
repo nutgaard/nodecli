@@ -73,6 +73,7 @@ module.exports = class ConfigCommand extends Command {
                 Log.pure(`Config for ${result.artifact_final_name} in ${env}`);
                 Log.spacer();
                 Log.collector.flush();
+                Log.spacer();
             })
     }
 

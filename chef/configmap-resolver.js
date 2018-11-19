@@ -69,7 +69,12 @@ function resolve(env, configMap) {
                 value = chalk.yellow(valueStr);
             } else if (valueStr.startsWith("databag")) {
                 value = resolveDatabagValue(env, valueStr);
-            } else if (valueStr.startsWith("vault") || valueStr.startsWith('chef_cert')) {
+            } else if (valueStr.startsWith("vault")) {
+                if (!valueStr.startsWith("vault|krypterte_passord")) {
+                    Log.collector.error("Unrecognized vault-space: ", valueStr)
+                }
+                value = '**********';
+            } else if (valueStr.startsWith('chef_cert')) {
                 value = '**********';
             } else {
                 value = valueStr;
