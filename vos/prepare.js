@@ -45,7 +45,10 @@ module.exports = class PrepareCommand extends Command {
                 return `https://intra.terra.no/insurance-damage/#/damage/${damageId}`;
             })
             .toArray();
-        fileUtils.writeContent(dupprocFile, ...dupproc);
+        fileUtils.writeContent(dupprocFile,
+            'Saker med duplikater i ActiveVos. Denne filen blir bare oppdatert ved kjøring av java-analysen',
+            '----------------------------------------------------------------------------------------------',
+            ...dupproc);
 
         logging.info("Klargjørings-script ferdig. Du kan nå kjøre `vos check` og `vos update`.");
     }
