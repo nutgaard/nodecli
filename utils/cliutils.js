@@ -92,7 +92,8 @@ class Cli {
     }
 
     printHelp() {
-        const helplines = Object.entries(this.commands)
+        const helplines = Object.keys(this.commands)
+            .map((key) => [key, this.commands[key]])
             .map(([cmdName, cmdImpl]) => [cmdName, array(cmdImpl.help())])
             .map(([cmdName, cmdHelplines]) => {
                 return cmdHelplines
