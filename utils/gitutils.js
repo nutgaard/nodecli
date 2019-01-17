@@ -1,5 +1,6 @@
 const path = require('path');
 const execa = require('execa');
+const time = require('time-ago');
 const fetchJson = require('./fetch').fetchJson;
 
 function exec(str) {
@@ -92,6 +93,27 @@ function getLastCommitMessages(lastN = 10) {
         .map((commit) => commit.slice(8));
 }
 
+const jiraTagPattern = /^\[?\w+(?:-\d+)\]?/;
+function processCommits(json) {
+    return json.values.map((commit) => ({
+        hash: commit.displayId,
+        author: commit.author.displayName,
+        commited: time.ago(commit.authorTimestamp),
+        message: commit.message,
+        jiratag: jiraTagPattern.test(commit.message) ? jiraTagPattern.exec(commit.message)[0].replace(/\[|\]/g, '') : null
+    }));
+}
+
+function getRemoteCommits(project, repo, from, to) {
+    return fetchJson(`https://git.intra.eika.no/rest/api/1.0/projects/${project}/repos/${repo}/commits?since=v${from}&until=v${to}&limit=200&withCounts=true`)
+        .then(processCommits);
+}
+
+function getTaggedRemoteCommits(project, repo, from, to) {
+    return getRemoteCommits(project, repo, from, to)
+        .then((commits) => commits.filter(({ jiratag }) => jiratag));
+}
+
 module.exports = {
     hasLocalChanges,
     getOrigin,
@@ -100,5 +122,7 @@ module.exports = {
     getPRUrl,
     getCurrentBranch,
     getRemoteBranches,
-    getLastCommitMessages
+    getLastCommitMessages,
+    getRemoteCommits,
+    getTaggedRemoteCommits
 };

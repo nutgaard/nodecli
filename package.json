@@ -18,7 +18,10 @@
     "app": "./app/index.js",
     "show": "./show/index.js",
     "chef": "./chef/index.js",
-    "vos": "./vos/index.js"
+    "vos": "./vos/index.js",
+    "rfc": "./rfc/index.js",
+    "release": "./release/index.js",
+    "passordbytte": "./passordbytte/index.js"
   },
   "dependencies": {
     "base-64": "^0.1.0",
@@ -39,7 +42,12 @@
     "request": "^2.81.0",
     "request-promise": "^4.2.1",
     "strip-ansi": "^5.0.0",
+    "time-ago": "^0.2.1",
     "xml2js": "^0.4.19",
     "yargs": "^8.0.1"
+  },
+  "devDependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "json-source-map": "^0.4.0"
   }
 }
