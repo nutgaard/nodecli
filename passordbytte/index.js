@@ -67,8 +67,8 @@ function getNpmSecret({ username, password, encrypted }) {
 
 function updateFiles({ encrypted, npmSecret }) {
     const homedir = require('os').userInfo().homedir;
-    const m2File = path.join(homedir, '.m2', 'settings-copy.xml');
-    const npmrcFile = path.join(homedir, '.npmrc-copy');
+    const m2File = path.join(homedir, '.m2', 'settings.xml');
+    const npmrcFile = path.join(homedir, '.npmrc');
 
     if (fs.existsSync(m2File)) {
         Log.info("Fant .m2/settings, og erstatter kryptert passord der");
