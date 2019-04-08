@@ -37,11 +37,13 @@ function getBranchConfig() {
     const current = getCurrentBranch();
     const isCurrentRemote = getRemoteBranches().includes(current);
     const currentRemote = isCurrentRemote ? `remotes/origin/${current}` : undefined;
+    const hasDevelopBranch = getRemoteBranches().includes('develop');
 
     return {
         current,
         currentRemote,
-        isCurrentRemote
+        isCurrentRemote,
+        hasDevelopBranch
     };
 }
 
@@ -57,7 +59,7 @@ module.exports = class PrCommand extends Command {
             exec(`git push -u origin ${branchconfig.current}`);
         }
 
-        getPRUrl(branchconfig.current)
+        getPRUrl(branchconfig.current, branchconfig.hasDevelopBranch ? 'develop' : 'master')
             .then(open);
     }
 

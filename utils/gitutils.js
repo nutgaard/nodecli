@@ -42,7 +42,7 @@ function getOrigin() {
     return { isGithub, isStash, repo, project };
 }
 
-function getPRUrl(fromBranch) {
+function getPRUrl(fromBranch, toBranch = "master") {
     const origin = getOrigin();
 
     if (origin.isGithub) {
@@ -56,7 +56,7 @@ function getPRUrl(fromBranch) {
                 if (openPr) {
                     return `https://git.intra.eika.no/projects/${origin.project}/repos/${origin.repo}/pull-requests/${openPr.id}/overview`;
                 } else {
-                    return `https://git.intra.eika.no/projects/${origin.project}/repos/${origin.repo}/pull-requests?create&sourceBranch=refs%2Fheads%2F${fromBranch}&targetBranch=refs%2Fheads%2Fdevelop`;
+                    return `https://git.intra.eika.no/projects/${origin.project}/repos/${origin.repo}/pull-requests?create&sourceBranch=refs%2Fheads%2F${fromBranch}&targetBranch=refs%2Fheads%2F${toBranch}`;
                 }
             });
     }
