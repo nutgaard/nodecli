@@ -9,8 +9,13 @@ function pad(str, length, padding = ' ') {
     const padStr = new Array(padSize).fill(padding).join('');
     return `${str}${padStr}`;
 }
+
 function array(value) {
     return Array.isArray(value) ? value : [value];
+}
+
+function migrate(fn, helpObject) {
+    return new Command(fn, () => helpObject);
 }
 
 class CmdLogger {
@@ -110,5 +115,6 @@ class Cli {
 
 module.exports = {
     Cli,
-    Command
+    Command,
+    migrate
 };
