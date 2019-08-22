@@ -44,6 +44,7 @@ function getOrigin() {
 function getPRUrl(fromBranch) {
     const origin = getOrigin();
 
+    console.log('origin', origin);
     if (origin.isGithub) {
         return Promise.resolve(`https://github.com/navikt/${origin.repo}/compare/${fromBranch}?expand=1`);
     } else {
