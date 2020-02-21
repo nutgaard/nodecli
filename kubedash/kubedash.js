@@ -13,11 +13,9 @@ function setContext(context) {
     console.log(exec(`kubectl config use-context ${context}`).join('\n'));
 }
 function startDashboard() {
-    const res = exec('kubectl get pod --namespace kubernetes-dashboard --selector k8s-app=kubernetes-dashboard --output jsonpath=\'{.items[0].metadata.name}\'');
-    const name = res[0].replace(/'/g, '');
-
-
-    const cmd = execa('kubectl', ['port-forward','--namespace','kubernetes-dashboard', name ,'9090:9090']);
+    // kubectl port-forward deployment/kubernetes-dashboard 9090:9090 --namespace kubernetes-dashboard
+    // const cmd = execa('kubectl', ['port-forward','--namespace','kubernetes-dashboard', name ,'9090:9090']);
+    const cmd = execa('kubectl', 'port-forward deployment/kubernetes-dashboard 9090:9090 --namespace kubernetes-dashboard'.split(' '));
     cmd.stdout.pipe(process.stdout);
     cmd.catch((error) => console.log('error', error));
 }

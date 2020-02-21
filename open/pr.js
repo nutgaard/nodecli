@@ -51,10 +51,11 @@ module.exports = function () {
         return;
     }
 
+    const extraArgs = process.argv.slice(3);
     const branchconfig = getBranchConfig();
     if (!branchconfig.isCurrentRemote) {
         logging.info('Branch not found on remote, pushing...');
-        exec(`git push -u origin ${branchconfig.current}`);
+        exec(`git push -u origin ${branchconfig.current} ${extraArgs.join(' ')}`);
     }
 
     getPRUrl(branchconfig.current)

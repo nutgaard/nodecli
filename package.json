@@ -28,7 +28,11 @@
     "scangit": "./scangit/index.js",
     "app": "./app/index.js",
     "show": "./show/index.js",
-    "kubedash": "./kubedash/kubedash.js"
+    "kubedash": "./kubedash/kubedash.js",
+    "nais": "./nais/index.js",
+    "watch": "./watch/watch.bat",
+    "ghdiff": "./ghdiff/index.js",
+    "pom": "./pom/index.js"
   },
   "dependencies": {
     "base-64": "^0.1.0",
