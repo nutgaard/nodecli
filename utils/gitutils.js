@@ -16,11 +16,11 @@ function max(...args) {
 }
 
 function getGitRoot() {
-    try {
-        return execa.shellSync('git rev-parse --show-toplevel').stdout;
-    } catch (e) {
-        return false;
-    }
+    return execa.shellSync('git rev-parse --show-toplevel').stdout;
+}
+
+function getRevList() {
+    return exec('git rev-list --all');
 }
 
 function getOrigin() {
@@ -93,6 +93,11 @@ function getLastCommitMessages(lastN = 10) {
         .map((commit) => commit.slice(8));
 }
 
+function grep(pattern, commits) {
+    console.log('exec', `git grep -P "${pattern}" ${commits.join(' ')}`);
+    return exec(`git grep -P "${pattern}" ${commits.join(' ')}`)
+}
+
 module.exports = {
     hasLocalChanges,
     getOrigin,
@@ -101,5 +106,7 @@ module.exports = {
     getPRUrl,
     getCurrentBranch,
     getRemoteBranches,
-    getLastCommitMessages
+    getLastCommitMessages,
+    getRevList,
+    grep
 };

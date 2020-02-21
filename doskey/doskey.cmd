@@ -13,4 +13,4 @@ DOSKEY jo=open jira $*
 DOSKEY co=git co $*
 DOSKEY idea=%~dp0/startIdea $*
 DOSKEY k=kubectl $*
-DOSKEY =cls
+DOSKEY l=cls
