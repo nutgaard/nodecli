@@ -7,6 +7,7 @@ function load(file) {
     }
     return {};
 }
+
 function save(file, content) {
     fs.writeFileSync(file, JSON.stringify(content));
 }

@@ -3,9 +3,15 @@ const fs = require('fs');
 const path = require('path');
 const regedit = require('regedit');
 const log = require('./utils/logging');
+const nodecliConfig = require('./utils/nodecli-config').default;
+const ConfigKeys = require('./utils/nodecli-config').ConfigKeys;
 
 const isInternal = process.argv[2] !== 'external';
 const { path: envPath } = process.env;
+
+nodecliConfig.configure({
+    [ConfigKeys.isInternal]: isInternal
+});
 
 if (isInternal) {
     const credentials = require('./utils/credentials');

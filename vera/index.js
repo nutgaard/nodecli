@@ -1,11 +1,21 @@
 #!node
 const Cli = require('./../utils/cliutils').Cli;
+const nodecliConfig = require('./../utils/nodecli-config').default;
+
+function getInternalCommands() {
+    if (nodecliConfig.isInternal()) {
+        return {
+            lift: require('./lift-command'),
+            redeploy: require('./redeploy-command')
+        };
+    }
+    return {};
+}
 
 const cli = new Cli('vera', {
-    lift: require('./lift-command'),
+    ...(getInternalCommands()),
     diff: require('./diff-command'),
     sjekk: require('./sjekk-command'),
-    redeploy: require('./redeploy-command')
 });
 
 cli.run();

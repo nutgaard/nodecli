@@ -7,12 +7,13 @@
   "license": "MIT",
   "preferGlobal": true,
   "bin": {
-    "vera": "./vera/index.js",
-    "open": "./open/index.js",
+    "app": "./app/index.js",
     "branch": "./branch/index.js",
-    "version": "./version/index.js",
-    "versjon": "./version/index.js",
-    "app": "./app/index.js"
+    "nais": "./nais/index.js",
+    "open": "./open/index.js",
+    "pom": "./pom/index.js",
+    "vera": "./vera/index.js",
+    "version": "./version/index.js"
   },
   "dependencies": {
     "base-64": "^0.1.0",
