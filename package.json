@@ -9,26 +9,10 @@
   "bin": {
     "vera": "./vera/index.js",
     "open": "./open/index.js",
-    "commit": "./commitizenish/index.js",
     "branch": "./branch/index.js",
-    "deploydaemon": "./deploydaemon/index.js",
-    "deploy": "./deploy/index.js",
-    "cluster": "./cluster/index.js",
-    "cat": "./cat/index.js",
     "version": "./version/index.js",
     "versjon": "./version/index.js",
-    "skya": "./skya/index.js",
-    "snapshots": "./snapshots/index.js",
-    "snaps": "./snapshots/index.js",
-    "files": "./files/files.js",
-    "lines": "./files/lines.js",
-    "grouplines": "./files/grouplines.js",
-    "go": "./goto/goto.js",
-    "godirs": "./goto/gotodirs.js",
-    "scangit": "./scangit/index.js",
-    "app": "./app/index.js",
-    "show": "./show/index.js",
-    "kubedash": "./kubedash/kubedash.js"
+    "app": "./app/index.js"
   },
   "dependencies": {
     "base-64": "^0.1.0",
