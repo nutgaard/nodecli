@@ -1,4 +1,4 @@
-#!node
+#!/usr/bin/node
 const execa = require('execa');
 const inquirer = require('inquirer');
 const fuzzysearch = require('fuzzysearch');

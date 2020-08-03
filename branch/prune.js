@@ -1,4 +1,4 @@
-#!node
+#!/usr/bin/node
 const execa = require('execa');
 const logging = require('./../utils/logging');
 const inquirer = require('inquirer');
