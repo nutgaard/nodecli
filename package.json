@@ -7,18 +7,10 @@
   "license": "MIT",
   "preferGlobal": true,
   "bin": {
-    "open": "./open/index.js",
-    "commit": "./commitizenish/index.js",
     "branch": "./branch/index.js",
-    "version": "./version/index.js",
-    "versjon": "./version/index.js",
-    "snapshots": "./snapshots/index.js",
-    "snaps": "./snapshots/index.js",
-    "files": "./files/files.js",
-    "lines": "./files/lines.js",
-    "grouplines": "./files/grouplines.js",
+    "open": "./open/index.js",
     "scangit": "./scangit/index.js",
-    "show": "./show/index.js"
+    "snapshots": "./snapshots/index.js"
   },
   "dependencies": {
     "base-64": "^0.1.0",
@@ -35,7 +27,6 @@
     "node-notifier": "^5.1.2",
     "open": "0.0.5",
     "properties-parser": "^0.3.1",
-    "regedit": "^2.2.7",
     "request": "^2.88.0",
     "request-promise": "^4.2.1",
     "xml2js": "^0.4.19",
