@@ -7,28 +7,18 @@
   "license": "MIT",
   "preferGlobal": true,
   "bin": {
-    "vera": "./vera/index.js",
     "open": "./open/index.js",
     "commit": "./commitizenish/index.js",
     "branch": "./branch/index.js",
-    "deploydaemon": "./deploydaemon/index.js",
-    "deploy": "./deploy/index.js",
-    "cluster": "./cluster/index.js",
-    "cat": "./cat/index.js",
     "version": "./version/index.js",
     "versjon": "./version/index.js",
-    "skya": "./skya/index.js",
     "snapshots": "./snapshots/index.js",
     "snaps": "./snapshots/index.js",
     "files": "./files/files.js",
     "lines": "./files/lines.js",
     "grouplines": "./files/grouplines.js",
-    "go": "./goto/goto.js",
-    "godirs": "./goto/gotodirs.js",
     "scangit": "./scangit/index.js",
-    "app": "./app/index.js",
-    "show": "./show/index.js",
-    "kubedash": "./kubedash/kubedash.js"
+    "show": "./show/index.js"
   },
   "dependencies": {
     "base-64": "^0.1.0",
@@ -46,7 +36,7 @@
     "open": "0.0.5",
     "properties-parser": "^0.3.1",
     "regedit": "^2.2.7",
-    "request": "^2.81.0",
+    "request": "^2.88.0",
     "request-promise": "^4.2.1",
     "xml2js": "^0.4.19",
     "yargs": "^8.0.1"

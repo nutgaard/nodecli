@@ -1,6 +1,5 @@
 // http://stash.devillo.no/plugins/servlet/search?q=veilarbportefolje
 const open = require('open');
-const execa = require('execa');
 const fetch = require('node-fetch');
 const inquirer = require('inquirer');
 const getOrigin = require('./../utils/gitutils').getOrigin;
@@ -9,7 +8,6 @@ const logging = require('./../utils/logging');
 module.exports = function (query) {
     if (!query || query === '.') {
         const origin = getOrigin();
-
         if (origin.isStash) {
             open(`http://stash.devillo.no/projects/${origin.project}/repos/${origin.repo}/browse`);
         } else if (origin.isGithub) {

@@ -1,19 +1,19 @@
 const fetchImpl = require('node-fetch');
 const base64 = require('base-64');
 const logging = require('./logging');
-const credentials = require('./credentials');
-
-const username = credentials.domenebrukernavn;
-const password = credentials.domenepassord;
+// const credentials = require('./credentials');
+//
+// const username = credentials.domenebrukernavn;
+// const password = credentials.domenepassord;
 
 const fetchbase = (reader) => (input, init) => {
-    if (init && init.headers) {
-        init.headers.append('Authorization', `Basic ${base64.encode(`${username}:${password}`)}`);
-    } else {
-        const headers = new fetchImpl.Headers();
-        headers.append('Authorization', `Basic ${base64.encode(`${username}:${password}`)}`);
-        init = Object.assign(init || {}, { headers });
-    }
+    // if (init && init.headers) {
+    //     init.headers.append('Authorization', `Basic ${base64.encode(`${username}:${password}`)}`);
+    // } else {
+    //     const headers = new fetchImpl.Headers();
+    //     headers.append('Authorization', `Basic ${base64.encode(`${username}:${password}`)}`);
+    //     init = Object.assign(init || {}, { headers });
+    // }
 
     return fetchImpl(input, init)
         .then((resp) => {

@@ -34,7 +34,7 @@ function getOrigin() {
     const isGithub = remoteOrigin.includes('github.com');
     const isStash = remoteOrigin.includes('stash.devillo.no');
 
-    const remoteFragments = remoteOrigin.split(/[/.]/);
+    const remoteFragments = remoteOrigin.split(/[/.:]/);
     const repo = remoteFragments[remoteFragments.length - 2];
     const project = remoteFragments[remoteFragments.length - 3];
 
@@ -45,7 +45,7 @@ function getPRUrl(fromBranch) {
     const origin = getOrigin();
 
     if (origin.isGithub) {
-        return Promise.resolve(`https://github.com/navikt/${origin.repo}/compare/${fromBranch}?expand=1`);
+        return Promise.resolve(`https://github.com/${origin.project}/${origin.repo}/compare/${fromBranch}?expand=1`);
     } else {
         return fetchJson(`http://stash.devillo.no/rest/api/1.0/projects/${origin.project}/repos/${origin.repo}/pull-requests`)
             .then((json) => {

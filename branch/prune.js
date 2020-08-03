@@ -6,6 +6,7 @@ const inquirer = require('inquirer');
 function deleteBranch(force) {
     return (name) => {
         try {
+            console.log('Deleting', name);
             if (force) {
                 execa.shellSync(`git branch -D ${name}`);
             } else {
@@ -52,5 +53,7 @@ module.exports = function (args) {
         message: `Delete branches?`,
         choices: localNotInRemote,
         pageSize: localNotInRemote.length + 10
-    }]).then(({ branches }) => branches.forEach(deleteBranch(force)))
+    }])
+        .then(({ branches }) => branches.forEach(deleteBranch(force)))
+        .then(() => process.exit(0));
 };
