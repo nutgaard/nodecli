@@ -1,4 +1,4 @@
-#!/usr/bin/node
+#!/usr/bin/env node
 const execa = require('execa');
 const inquirer = require('inquirer');
 const fuzzysearch = require('fuzzysearch');
@@ -18,7 +18,7 @@ function getBranches() {
             branches.add(name);
             return branches;
         }, new Set());
-    
+
     return Array.from(branches);
 }
 

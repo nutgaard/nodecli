@@ -1,4 +1,4 @@
-#!/usr/bin/node
+#!/usr/bin/env node
 const Cli = require('./../utils/cliutils').Cli;
 const Command = require('./../utils/cliutils').Command;
 const logging = require('./../utils/logging');
