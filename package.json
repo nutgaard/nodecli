@@ -31,7 +31,7 @@
     "inquirer": "^3.0.6",
     "inquirer-autocomplete-prompt": "^0.12.2",
     "levenshtein": "^1.0.5",
-    "node-fetch": "^1.6.3",
+    "node-fetch": "^3.1.1",
     "node-notifier": "^5.1.2",
     "open": "0.0.5",
     "properties-parser": "^0.3.1",
